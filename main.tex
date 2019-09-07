@@ -31,7 +31,7 @@ singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespac
 %nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
 %liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
 %toctotoc, % Uncomment to add the main table of contents to the table of contents
-%parskip, % Uncomment to add space between paragraphs
+parskip, % Uncomment to add space between paragraphs
 %nohyperref, % Uncomment to not load the hyperref package
 headsepline, % Uncomment to get a line under the header
 %chapterinoneline, % Uncomment to place the chapter title next to the number on one line
@@ -48,6 +48,8 @@ headsepline, % Uncomment to get a line under the header
 \addbibresource{example.bib} % The filename of the bibliography
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+\usepackage{tabu}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -156,25 +158,47 @@ Department Engineering\\[2cm] % Research group name and department name
 %----------------------------------------------------------------------------------------
 %	DECLARATION PAGE
 %----------------------------------------------------------------------------------------
-
 \begin{declaration}
 \addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
-\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
+% \noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
+
+% \begin{itemize} 
+% \item This work was done wholly or mainly while in candidature for a research degree at this University.
+% \item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
+% \item Where I have consulted the published work of others, this is always clearly attributed.
+% \item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
+% \item I have acknowledged all main sources of help.
+% \item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
+% \end{itemize}
+ 
+% \noindent Signed:\\
+% \rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+ 
+% \noindent Date:\\
+% \rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+
+\noindent Ich, \authorname, versichere an Eides statt durch meine untenstehende Unterschrift,
 
 \begin{itemize} 
-\item This work was done wholly or mainly while in candidature for a research degree at this University.
-\item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
-\item Where I have consulted the published work of others, this is always clearly attributed.
-\item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
-\item I have acknowledged all main sources of help.
-\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
+\item dass ich die vorliegende Arbeit - mit Ausnahme der Anleitung durch die Betreuer - selbstst\"andig ohne fremde Hilfe angefertigt habe und
+\item dass ich alle Stellen, die w\"ortlich oder ann\"ahernd w\"ortlich aus fremden Quellen entnommen sind, entsprechend als Zitate gekennzeichnet habe und
+\item dass ich ausschließlich die angegebenen Quellen (Literatur, Internetseiten, sonstige Hilfsmittel) verwendet habe und
+\item dass ich alle entsprechenden Angaben nach bestem Wissen und Gewissen vorgenommen habe, dass sie der Wahrheit entsprechen und dass ich nichts verschwiegen habe.
 \end{itemize}
- 
-\noindent Signed:\\
-\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
- 
-\noindent Date:\\
-\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+
+\noindent Mir ist bekannt, dass eine falsche Versicherung an Eides Statt nach \S 156 und nach \S 163 Abs. 1 des Strafgesetzbuches mit Freiheitsstrafe oder Geldstrafe bestraft wird.\\[.4cm]
+
+% Ort, Datum
+% Unterschrift
+
+\begin{center}
+	\begin{tabu} to .95\textwidth { X[l] X[c] X[r] }
+		~ & ~ & ~ \\
+		\cline{1-1} \cline{3-3} \\
+		Ort, Datum  & ~  & Unterschrift \\
+	\end{tabu}
+\end{center}
+
 \end{declaration}
 
 \cleardoublepage
@@ -185,9 +209,9 @@ Department Engineering\\[2cm] % Research group name and department name
 
 \vspace*{0.2\textheight}
 
-\noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
+\noindent\enquote{\itshape To see a world in a grain of sand, hold infinity in the palm of your hand. }\bigbreak
 
-\hfill Dave Barry
+\hfill William Blake
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
@@ -204,18 +228,30 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
+% The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
+I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens Krüger, for your valuable guidance, encouragement and support. Your patience and faith in me was a key reason that I could finish the work.
+
+\noindent Also I express my thanks to Prof. Dr. Yunqi Lei, Dr. Bixia Wu and Dr. Franz-Josef Schmitz. Without your support, I could not have finished the task successfully.
 \end{acknowledgements}
 
 %----------------------------------------------------------------------------------------
 %	LIST OF CONTENTS/FIGURES/TABLES PAGES
 %----------------------------------------------------------------------------------------
 
-\tableofcontents % Prints the main table of contents
+{
+	\hypersetup{linkcolor = red!40!black}
+	\tableofcontents % Prints the main table of contents
+}
 
-\listoffigures % Prints the list of figures
+{
+	\hypersetup{linkcolor = red!30!black}
+	\listoffigures % Prints the list of figures
+}
 
-\listoftables % Prints the list of tables
+{
+	\hypersetup{linkcolor = red!25!black}
+	\listoftables % Prints the list of tables
+}
 
 %----------------------------------------------------------------------------------------
 %	ABBREVIATIONS
@@ -261,7 +297,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 %	DEDICATION
 %----------------------------------------------------------------------------------------
 
-\dedicatory{For/Dedicated to/To my\ldots} 
+\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Vivian, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS

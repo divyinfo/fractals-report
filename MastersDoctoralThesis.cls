@@ -436,8 +436,8 @@ KOMA-script documentation for details.}]{fancyhdr}
 %	DECLARATION PAGE DESIGN
 %----------------------------------------------------------------------------------------
 
-\newcommand{\authorshipname}{Declaration of Authorship}
-\providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}{\authorshipname}{Declaration of Authorship} % Declaration of Authorship text for English countries
+\newcommand{\authorshipname}{Versicherung an Eides Statt}
+\providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish}{\authorshipname}{Versicherung an Eides Statt} % Declaration of Authorship text for English countries
 \providecaptionname{german,ngerman,austrian,naustrian}{\authorshipname}{Eidesstattliche Erkl\"arung} % Declaration of Authorship text for Germanic countries
 
 \ifbool{consistentlayout}{
