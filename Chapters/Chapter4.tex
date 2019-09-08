@@ -1,10 +1,10 @@
 % Chapter Template
 
-\chapter{Practical Implementation of the Project} % Main chapter title
+\chapter{Implementation} % Main chapter title
 
 \label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-In this chapter, we'll describe in details the overall structure of the project, how the files are arranged and the functionalities of each of the components.
+In this chapter, we'll describe in details the overall structure of the project, how the files are arranged and the functionalities of each components.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -19,7 +19,7 @@ Since this project is a pure web project, the front end occupies a large portion
 %-----------------------------------
 \subsection{HTML Entry \texttt{index.html}}
 
-The entry of the project is where this program gets started, in similar concept of the \texttt{main()} function in \texttt{C} or the \texttt{public static void main(String[] args)} function in \texttt{Java}. The entry point is a \gls{html} file and as expected named \texttt{index.html}. It introduces the front end structure of the project
+The entry of the project is where this program gets started, in similar concept of the \texttt{main()} function in \texttt{C} or the \texttt{public static void main(String[] args)} function in \texttt{Java}. The entry point is a \gls{html} file and as expected named \texttt{index.html}. It introduces the front end structure of the project in raw.
 
 %-----------------------------------
 %	SUBSECTION 2
@@ -27,7 +27,9 @@ The entry of the project is where this program gets started, in similar concept 
 
 \subsection{Main JavaScript \texttt{index.js}}
 
-Most of the important codes lies within the file \texttt{inex.js} which is included to the main entry file \texttt{index.html} via a \texttt{<script>} tag at the very end.
+At the very end of \texttt{index.html}, the main \gls{js} file \texttt{index.js} gets included via a \texttt{<script>} tag.
+
+// Reasons to put at the end goes here
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -35,8 +37,42 @@ Most of the important codes lies within the file \texttt{inex.js} which is inclu
 
 \section{Back End Calculation}
 
-The back end calculation is done by the \gls{js} file \texttt{naive-worker.js}. This file is being used for initializing the \emph{WebWorker}s inside \texttt{index.js} dynamically. Whenever a calculation or extraction for a specific region of a dataset is needed, 
+The back end calculation is done in the \gls{js} file \texttt{naive-worker.js}. This file is being used for initializing the \emph{WebWorker}s inside \texttt{index.js} dynamically. Whenever a calculation or extraction for a specific region of a dataset is needed, the main \gls{js} file \texttt{index.js} is going to send a message to \texttt{naive-worker.js} with desired parameters and this back end will respond with corresponding image data.
+
+\subsection{Global Scope}
+
+In the global scope of this file, the following things were done.
+
+\paragraph{Includes} The \texttt{decimal.js} dependency is included for high-precision floating points calculation. Default parameters for the dependency is set.
+
+\paragraph{Constants} Constants of default screen width and default screen height are defined in case the front end doesn't give these parameters.
+
+\paragraph{Canvas} An \texttt{OffscreenCanvas} instance is created and instantiated with the dimensions of by default the values of the defined constants. The \texttt{OffscreenCanvas} will be used as the canvas to generate the desired image on, and since it's not being shown on the screen, will occupy less system resources and boost the calculation speed. Corresponding variables will be declared, respectively \texttt{canvas} for the \texttt{OffscreenCanvas} itself and \texttt{ctx} as the 2d context of the canvas.
+
+\subsection{Message Reception}
+
+\subsection{Iteration Limit}
+
+\subsection{Iteration Count for One Point}
+
+\subsection{Image Generation}
+
+\subsection{High Precision Version}
 
 \section{Utility Assets}
 
-Consectetur voluptate occaecat id eiusmod anim Lorem incididunt. Ea commodo quis quis consequat exercitation culpa eu nostrud labore eu ex nisi consectetur. Laboris proident ut nisi mollit do nulla tempor nisi laboris id incididunt non velit. Est dolore ipsum in occaecat. Cillum eu veniam irure ut cillum. In deserunt enim incididunt Lorem nisi non consequat nostrud et reprehenderit. Cillum mollit duis eu proident ipsum occaecat enim veniam voluptate mollit. Laborum veniam cupidatat deserunt ea deserunt consequat ut anim in exercitation elit consequat. Laboris veniam commodo adipisicing id occaecat ad consequat ad. Aliqua do anim veniam ullamco ipsum quis cillum. Adipisicing nostrud deserunt sit incididunt nisi. Cupidatat sit aute magna tempor veniam magna labore.
+Other open source third-party utilities lie in different folders with corresponding names.
+
+\subsection{Folder \texttt{./js}}
+
+In \texttt{./js} folder, all \gls{js} third-party files are here, including:
+
+\begin{itemize}
+    \item File \texttt{decimal.min.js} is for high-precision floating points calculation for \glsdesc{js}.
+    \item File \texttt{jquery-3.4.1.min.js} is for \gls{dom} traversal and manipulation, event handling and animation.
+    \item File \texttt{bootstrap.bundle.min.js} is for some basic styling of the control panel sitting on top right corner of the screen.
+\end{itemize}
+
+\subsection{Folder \texttt{./fa}}
+
+\subsection{Folder \texttt{./css}}
