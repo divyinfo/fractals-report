@@ -50,6 +50,10 @@ headsepline, % Uncomment to get a line under the header
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
 \usepackage{tabu}
+\usepackage{glossaries}
+
+% Generate the glossary
+\makeglossaries
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -259,8 +263,13 @@ I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens K
 
 \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
-\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+\textbf{HTML} & \textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage\\
+\textbf{JS} & \textbf{J}ava\textbf{S}cript\\
+\textbf{CSS} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets\\
+
+\newglossaryentry{html}{name = {HTML}, description = {Hypertext Markup Language}}
+\newglossaryentry{js}{name = {JS}, description = {JavaScript}}
+\newglossaryentry{css}{name = {CSS}, description = {Cascading Style Sheets}}
 
 \end{abbreviations}
 
@@ -297,7 +306,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 %	DEDICATION
 %----------------------------------------------------------------------------------------
 
-\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Vivian, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
+\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Mrs. Vivian Elizabeth Rice, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS
