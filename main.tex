@@ -55,6 +55,23 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{tabu}
 \usepackage{glossaries}
 
+\usepackage{listings}
+\lstset{
+	basicstyle=\small\ttfamily,
+	columns=flexible,
+	breaklines=true
+}
+
+\usepackage{url}
+
+% Generate complete reference using autoref & nameref
+\newcommand\gmref[1]{\autoref{#1}~\nameref{#1}}
+
+% Chinese characters
+% \usepackage[utf8]{inputenc}
+% \usepackage{CJKutf8}
+% \newcommand\chn[1]{\begin{CJK}{UTF8}{song}#1\end{CJK}}
+
 % Generate the glossary
 \makeglossaries
 
@@ -71,6 +88,10 @@ headsepline, % Uncomment to get a line under the header
 	bottom=1.5cm, % Bottom margin
 	%showframe, % Uncomment to show how the type block is set on the page
 }
+
+% Maximum nesting numbers. E.g. 1.1.1.1 Section Title
+\setcounter{secnumdepth}{3}
+% \setcounter{tocdepth}{3}
 
 %----------------------------------------------------------------------------------------
 %	THESIS INFORMATION
@@ -95,6 +116,9 @@ headsepline, % Uncomment to get a line under the header
 \hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
 \hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
 }
+
+\usepackage{nameref}
+\usepackage{cleveref}
 
 \begin{document}
 
@@ -266,13 +290,13 @@ I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens K
 
 \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{HTML} & \textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage\\
-\textbf{JS} & \textbf{J}ava\textbf{S}cript\\
-\textbf{CSS} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets\\
-\textbf{DOM} & \textbf{D}ocument \textbf{O}bject \textbf{M}odel\\
-\textbf{URL} & \textbf{U}niform \textbf{R}esource \textbf{L}ocator\\
-\textbf{JSON} & \textbf{J}ava \textbf{S}cript \textbf{O}bject \textbf{N}otation\\
-\textbf{UI} & \textbf{U}ser \textbf{I}nterface\\
+\textbf{HTML}\label{glo:html} & \textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage\\
+\textbf{JS}\label{glo:js} & \textbf{J}ava\textbf{S}cript\\
+\textbf{CSS}\label{glo:css} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets\\
+\textbf{DOM}\label{glo:dom} & \textbf{D}ocument \textbf{O}bject \textbf{M}odel\\
+\textbf{URL}\label{glo:url} & \textbf{U}niform \textbf{R}esource \textbf{L}ocator\\
+\textbf{JSON}\label{glo:json} & \textbf{J}ava \textbf{S}cript \textbf{O}bject \textbf{N}otation\\
+\textbf{UI}\label{glo:ui} & \textbf{U}ser \textbf{I}nterface\\
 
 \newglossaryentry{html}{name = {HTML}, description = {Hypertext Markup Language}}
 \newglossaryentry{js}{name = {JS}, description = {JavaScript}}
@@ -317,7 +341,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 %	DEDICATION
 %----------------------------------------------------------------------------------------
 
-\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Mrs. Vivian Elizabeth Rice, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
+\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Mrs. Vivian E. Rice, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS

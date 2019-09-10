@@ -26,33 +26,97 @@ The folder names and file names are mostly self-explanatory or conventional in t
 
 \paragraph{Folder \texttt{./.vscode}}
 
+The configured Visual Studio Code workspace settings file. This file is included and stored inside the workspace and only apply when the workspace is opened which overrides Visual Studio Code's default user settings. The author tweaked this file to make some parts of VS Code's editor, user interface, and functional behavior more fitting to review or to base future work upon this project.
+
+\begin{verbatim}
+// https://code.visualstudio.com/docs/getstarted/settings
+\end{verbatim}
+
 \paragraph{Folder \texttt{./js}}
+
+All the third-party open source \gls{js} dependencies are stored in this folder. Sometimes third-party open source projects include a bundle of \glsdesc{js} and \gls{css} files, here only the pure \gls{js} projects' files are included.
 
 \paragraph{Folder \texttt{./css}}
 
+The \gls{css} files of the projects are included. Firstly there is a \\\texttt{./css/common.css} file, which sets the overall styles of the project, basically whatever the users can see at the very first glance when they open this project. Then there are several other \gls{css} files, each sets a specific portion of the styles in this project. These files include:
+
+\begin{itemize}
+\item \gls{css} File \texttt{./css/dock.css} sets the iOS-Dock look-like styles, making the focused item larger with larger margins and adjacent items smaller and smaller margins with their corresponding nearby items.
+\item \gls{css} File \texttt{./css/minibar.css} sets the customed scrollbar styles that's being added upon the default styles of the dependency \emph{MiniBar} which is used to create custom scrollbars.
+\item \gls{css} File \texttt{./css/stacked.css} sets the styles of the stacked cards effect.
+\item \gls{css} File \texttt{./css/tabs.css} sets the related styles of the tabs effect.
+\end{itemize}
+
+Note that most of the effects require not only the \gls{css} stylings but also \gls{js} actions in order to work.
+
 \paragraph{Folder \texttt{./fa}}
+
+Assets of the dependency \emph{Font Awesome}, including all resources of the open source part. This dependency is used for the fonts of the icons in this project.
 
 \paragraph{Folder \texttt{./bs}}
 
+Assets of the open source project \emph{Bootstrap} by \emph{Twitter}. This dependency is used for the stylings of the web elements inside the control panel, such as input boxes, dropdown menus and font styles in control panel. It also comes with some nice utilities for general web elements style setting.
+
 \paragraph{Folder \texttt{./node\_modules}}
 
+Packages pulled from the \gls{js} dependency management tool \emph{npm} are stored in this folder. The required dependency here is the package \texttt{minibarjs} under this folder -- in folder \texttt{./node\_modules/minibarjs}. Conventionally this folder shouldn't be included or committed to the version control system\footnote{ This is actually also what this project is following. }, because all the packages info are recorded in the file \texttt{package.json} and \texttt{package-lock.json} and if any dependencies are missing, running the \emph{npm} command \texttt{npm install} should be able to pull all necessary dependencies into this folder, however, considering this project sometimes can be run in an environment without internet connection, this folder is included in the final static zipped package.
+
+\begin{verbatim}
+// https://www.npmjs.com/
+\end{verbatim}
+
 \paragraph{Folder \texttt{./exp}}
+
+Some trivial \emph{Python}, \gls{js} and \gls{html} codes left from the prototypes of implementation at the beginning of this project. Some of them are using different algorithms and different scripts trying to achieve similar results to this project. They are not in use anymore and only kept for future references.
 
 \subsection{Top Level Files}
 
 \paragraph{File \texttt{index.html}}
 
+This entry \gls{html} file of this project. When a server is being run on the local machine, this is the first file getting executed. When a different implementation of the back end using techniques other than a web worker, for example a \texttt{WebSocket}, is developed and being adapted to this project, double-clicking on this file should also start this project.
+
 \paragraph{File \texttt{index.js}}
+
+The main \gls{js} script file of the project. This file gets included at the very end of the \gls{html} file \texttt{index.html}.
 
 \paragraph{File \texttt{naive-worker.js}}
 
+The back end calculation \gls{js} script. The only job of this script is to receive information of the image the front end is asking for, and post the result message back to the front end. This piece of scripts not only post the complete results back, but also slices of results when the calculation takes longer than a certain amount of time and let the front end decide what to do with the partial results\footnote{ In this project, what the front end will do after receiving partial results is that it will still render the slices of images onto the canvas and high light the painted partial image with green borders. }.
+
 \paragraph{File \texttt{package.json}}
+
+A description file of the \gls{js} package management tool \emph{npm}. This file can have many descriptions about what \emph{npm} should do for this workspace but here it most importantly specifies which packages to pull from the global repository. 
+
+\begin{verbatim}
+// Description of npm - package.json
+// https://docs.npmjs.com/files/package.json
+\end{verbatim}
 
 \paragraph{File \texttt{package-lock.json}}
 
+A generated file from \emph{npm} package manager which locks the version of the dependencies of this specific workspace. Take the current project as an example, in file \texttt{package.json} there is this part in the \gls{json} body:
+
+\begin{verbatim}
+{
+  ..
+  "dependencies": {
+    ..
+    "minibarjs": "^0.4.0",
+    ..
+  },
+  ..
+}
+\end{verbatim}
+
+This piece of code only specified that the version of the package \texttt{minibarjs} that we require will match all \texttt{0.x.x} releases including \texttt{0.5.x}, but will hold off on \texttt{1.x.x}. This file \texttt{package-lock.json} will ``lock'' the version inside current workspace to a specific version with a hashed fingerprint of the files, in the current project with a version number of \texttt{0.4.0} and a hash fingerprint \path{sha512-iCUE/YVWn+0ht+NV2fLBS8bAVxED/9l6A5i1qJ20csCrc0tXHamgpWCo7uL+23HQ0UyFPvpw1izw2l3vzVKkXg==}.
+
 \paragraph{File \texttt{README.md}}
 
+A brief introduction file for the global version control system \emph{GitHub}. Trivial.
+
 \paragraph{File \texttt{.gitignore}}
+
+Version control settings file, telling which files should not be committed to \emph{Git} system. Not relavant to the project but the version control during the development phase of this project. Trivial.
 
 
 %----------------------------------------------------------------------------------------
@@ -78,7 +142,7 @@ First part of the \gls{html} file is the \texttt{<head>} part. In this part, the
     initial-scale=1, shrink-to-fit=no">
 \end{verbatim}
 
-And then all the needed \gls{css} files are included to end the \texttt{<head>} part. Besides the \gls{css} files which will be described in \ref{chap4:frontend-css}, the necessary \gls{css} files from third-party open source vendors are also included, including \emph{Bootstrap}'s \gls{css} part, \emph{FontAwesome} and \emph{MiniBar} \gls{css} assets.
+And then all the needed \gls{css} files are included to end the \texttt{<head>} part. Besides the \gls{css} files which will be described in \gmref{chap4:frontend-css}, the necessary \gls{css} files from third-party open source vendors are also included, including \emph{Bootstrap}'s \gls{css} part, \emph{FontAwesome} and \emph{MiniBar} \gls{css} assets.
 
 The \texttt{<body>} part is the essential part of the \gls{html} entry, which describes the structure of what users can ``actually see''. It begins first with three \texttt{<div>} tags for the most important three parts of this project, the container for main background canvases, the container for mini-maps, and the container for the control panel floating on the top right corner of the \gls{ui} screen. The positioning, sizes and container behaviours of these \texttt{<div>}s are defined in the \gls{css} files which are already included. Before users set any effects up, these properties mostly come from the file \texttt{./css/common.css}.
 
@@ -100,14 +164,113 @@ Worth noting that conventionally all \gls{js} files should be included at the ve
 
 \subsection{Main JavaScript \texttt{index.js}}
 
-The main \gls{js} file \texttt{index.js} is where we put our core code, where we 
+The main \gls{js} file \texttt{index.js} is where the core codes are. In this file there is firstly the definition of required classes from bottom level to the top, then the instantiation of them and putting the front end \gls{html} elements into action to display the overall results.
+
+There in total four classes defined.
+
+\subsubsection{Class \texttt{MandelWorker}}
+
+The class \texttt{MandelWorker} is in charge of sending a message to the back end and when a result is sent back, doing some other actions.
+
+When instantiated, an instance of a native \emph{Web Worker}\footnote{ Web Workers are a simple means for web content to run scripts in background threads. // \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}} will also be created as a private property of this class. \texttt{MandelWorker} instantiates the \emph{Web Worker} by the script \texttt{naive\-worker.js}, which means that the script \texttt{naive\-worker.js} will be the core of the worker and this worker will be doing whatever in that script when it is asked to.
+
+The function \texttt{work(params...)} is the interface between \texttt{MandelWorker} and the outside invoker. To get an image from the source, one must invoke this function with the needed parameters as follows:
+
+\begin{itemize}
+    \item \texttt{magnif}
+    \item \texttt{centerX}
+    \item \texttt{centerY}
+    \item \texttt{width}
+    \item \texttt{height}
+    \item \texttt{callback}   
+    \item \texttt{callbackThis}   
+\end{itemize}
+
+The function \texttt{workerResponse(e)}
+
+The function \texttt{destroy()}
+
+\subsubsection{Class \texttt{MapVisualPair}}
+
+An abstract concept of pairing a minimap\footnote{ Same concept in current project as an \emph{overview}. } with an active focus region with higher resolution.
+
+\path{init(mapCanvas, previewCanvas, visCanvas = null)}
+
+\path{destroy()}
+
+\path{drawMapHoverArea(offsetRealX = 0, offsetRealY = 0)}
+
+\path{drawPreviewHoverArea(offsetRealX = 0, offsetRealY = 0)}
+
+\path{moveTo(x = null, y = null)}
+
+\subsubsection{Class \texttt{MinimapManager}}
+
+The manager class of all the minimaps, controlling all their behaviours on the top level.
+
+\textbf{Inits}
+
+\path{initMaps(visCanvas, previewCanvas, mapsContainer, visualContainer, hoverX = 0, hoverY = 0)}
+
+\path{initPairMainDrag()}
+
+
+\textbf{Mouse Down(drag to browse around)}
+
+\path{pairMainMouseDown(e)}
+
+\path{pairMainMouseMove(e)}
+
+\path{pairMainMouseUp(e)}
+
+\path{pairMainStepDrag(timestamp)}
+
+
+\textbf{Mouse Wheel(zoom in and out)}
+
+\path{initPairMainWheel()}
+
+\path{pairMainWheel(e)}
+
+\path{pairMainTimeoutWheel()}
+
+\path{pairMainStepWheel()}
+
+
+\subsubsection{Class \texttt{EffectManager}}
+
+This class manages the behaviours, activation and deactivation of the overview effects and the preview effects of the overviews.
+
+General functions: \texttt{init()}, \texttt{getInfo(el)}
+
+Fade in / out related functions: \texttt{fadeMouseOver(e, currentPair)}, \texttt{fadeMouseOut(e, currentPair)}
+
+Zoom in / out through related functions: \texttt{zoomMouseOver(e, currentPair)}, \texttt{zoomStep(timestamp)}, \texttt{zoomMouseOut(e, currentPair)}
+
+General preview effects functions: \texttt{updatePreview()}, \texttt{updateFadePreview()}, \texttt{updateZoomPreview()}, \texttt{destroyPreview()}
+
+General overview effects functions: \texttt{destroy()}, \texttt{update()}
+
+Scrollbar + Dock effects specific functions: \texttt{initScrollbar()}, \texttt{destroyScrollbar()}, \texttt{updateScrollbar()}
+
+Stacked Cards effects specific functions: \texttt{initStacked()}, \texttt{destroyStacked()}, \texttt{updateStacked()}
+
+Tabs effects specific functions: \texttt{initTabs()}, \texttt{destroyTabs()}, \texttt{updateTabs()}
+
+\subsubsection{Instantiation, Variables And the Rest}
 
 \subsection{CSSs For Overview Effects}
 \label{chap4:frontend-css}
 
 Folder \texttt{./css} includes five \gls{css} files, each setting up some visual effects of the project.
 
-File \texttt{./css/common.css} first sets up all general apperance of the elements on the web page when no parameters or effects are set. File \texttt{./css/dock.css} sets up the apperance when \emph{Scrollbar + Dock} is activated, only the iOS Dock part and file \texttt{./css/minibar.css} sets up the scroll bar part. File \texttt{./css/stacked.css} sets up the effects of stacked cards. File \texttt{./css/tabs.css} sets up the effects of the tab selection on the top.
+File \texttt{./css/common.css} first sets up all general appearance of the elements on the web page when no parameters or effects are set. File \texttt{./css/dock.css} sets up the appearance when \emph{Scrollbar + Dock} is activated, only the iOS Dock part and file \\\texttt{./css/minibar.css} sets up the scroll bar part. File \texttt{./css/stacked.css} sets up the effects of stacked cards. File \texttt{./css/tabs.css} sets up the effects of the tab selection on the top.
+
+\subsection{Scrollbar + Dock Effect}
+
+\subsection{Stacked Cards Effect}
+
+\subsection{Tabs Effect}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -136,6 +299,8 @@ In the global scope of this file, the following things were done.
 \paragraph{Canvas} An \texttt{OffscreenCanvas} instance is created and instantiated with the dimensions of by default the values of the defined constants. The \texttt{OffscreenCanvas} will be used as the canvas to generate the desired image on, and since it's not being shown on the screen, will occupy less system resources and boost the calculation speed. Corresponding variables is declared after the instantiation, respectively \texttt{canvas} for the \texttt{OffscreenCanvas} itself and \texttt{ctx} as the 2d context of the canvas.
 
 \subsection{Message Reception}
+
+See \gmref{fig:messageexchange}.
 
 \subsection{Iteration Limit}
 
