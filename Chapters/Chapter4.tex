@@ -174,21 +174,39 @@ The class \texttt{MandelWorker} is in charge of sending a message to the back en
 
 When instantiated, an instance of a native \emph{Web Worker}\footnote{ Web Workers are a simple means for web content to run scripts in background threads. // \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}} will also be created as a private property of this class. \texttt{MandelWorker} instantiates the \emph{Web Worker} by the script \texttt{naive\-worker.js}, which means that the script \texttt{naive\-worker.js} will be the core of the worker and this worker will be doing whatever in that script when it is asked to.
 
+\textbf{Function \texttt{work(params...)}}
+
 The function \texttt{work(params...)} is the interface between \texttt{MandelWorker} and the outside invoker. To get an image from the source, one must invoke this function with the needed parameters as follows:
 
 \begin{itemize}
-    \item \texttt{magnif}
-    \item \texttt{centerX}
-    \item \texttt{centerY}
-    \item \texttt{width}
-    \item \texttt{height}
-    \item \texttt{callback}   
-    \item \texttt{callbackThis}   
+    \item \texttt{magnif} The magnification level of the result image to be expected from the \emph{Web Worker}.
+    \item \texttt{centerX} The \texttt{x} component of the center coordinates on the mathmatical plane of the result image to be expected from the worker.
+    \item \texttt{centerY} The \texttt{y} component of this coordinates.
+    \item \texttt{width} The width in pixels of the result image.
+    \item \texttt{height} The height in pixels of the result image.
+    \item \texttt{callback} The function to execute when a result message is received.
+    \item \texttt{callbackThis} The ``this'' context where the \texttt{callback} function should be executed under.
 \end{itemize}
 
-The function \texttt{workerResponse(e)}
+Here what's worth mentioning is the parameter \texttt{magnif}. The magnification level is a number representing the number of pixels that together has a length of $1$ on the mathmatical axis. As shown in \gmref{fig:magnif} is an image with the magnification level of $2$, since $2$ pixels have the length of $1$ on the mathmatical axis.
 
-The function \texttt{destroy()}
+\begin{figure}[th]
+\centering
+\includegraphics[keepaspectratio]{Figures/Chapter4/magnif.png}
+\decoRule
+\caption[Magnification Level]{Magnification level in aspect of mathmatical axis.}
+\label{fig:magnif}
+\end{figure}
+
+Once this function is invoked, \texttt{MandelWorker} will tell its own \emph{Web Worker} to start working on datasets fetching\footnote{ In the context of the current project, is actually image generation. }, and if any sorts of results come through that worker, hit the \texttt{workerResponse(e)} function of the current \texttt{MandelWorker}.
+
+\textbf{Function \texttt{workerResponse(e)}}
+
+The function \texttt{workerResponse(e)} will be called when a response from the \emph{Web Worker} is sent back. It basically does one thing: checking if the parameters of \texttt{callback} and \texttt{callbackThis} were set when function \texttt{work(params...)} got invoked in the first place. If they were set to any function, call it under the conext of the parameter \texttt{callbackThis}.
+
+\textbf{Function \texttt{destroy()}}
+
+The function \texttt{destroy()} as the name implies is the method to destroy and release the resources for current \texttt{MandelWorker}. It terminates the \emph{Web Worker}, sets the response method to \texttt{null} so no responses will be dealt furthermore and sets all other references to \texttt{null} as well so the internal \gls{js} engine can garbage collect\footnote{Include content of \url{https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)}} all these instance to avoid memory leakage when the calculation gets heavy.
 
 \subsubsection{Class \texttt{MapVisualPair}}
 
@@ -282,7 +300,7 @@ The back end calculation is done in the \gls{js} file \texttt{naive-worker.js}. 
 
 \begin{figure}[th]
 \centering
-\includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter4/messageexchange.png}
+\includegraphics[keepaspectratio]{Figures/Chapter4/messageexchange.png}
 \decoRule
 \caption[Message Exchange]{Message exchange between \texttt{index.js} and \texttt{naive-worker.js}.}
 \label{fig:messageexchange}
