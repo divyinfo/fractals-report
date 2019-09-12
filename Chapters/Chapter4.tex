@@ -7,7 +7,7 @@
 In this chapter, the overall structure of the project, how the files are arranged and the functionalities of each components, will be described in details.
 
 %----------------------------------------------------------------------------------------
-%	SECTION 1
+%	SECTION 
 %----------------------------------------------------------------------------------------
 
 \section{Files And Folders}
@@ -34,7 +34,7 @@ The configured Visual Studio Code workspace settings file. This file is included
 
 \paragraph{Folder \texttt{./js}}
 
-All the third-party open source \gls{js} dependencies are stored in this folder. Sometimes third-party open source projects include a bundle of \glsdesc{js} and \gls{css} files, here only the pure \gls{js} projects' files are included.
+All the third-party open source \gls{js} dependencies are stored in this folder. Sometimes third-party open source projects include a bundle of \acrfull{js} and \gls{css} files, here only the pure \gls{js} projects' files are included.
 
 \paragraph{Folder \texttt{./css}}
 
@@ -118,18 +118,79 @@ A brief introduction file for the global version control system \emph{GitHub}. T
 
 Version control settings file, telling which files should not be committed to \emph{Git} system. Not relavant to the project but the version control during the development phase of this project. Trivial.
 
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+
+\section{Start the Project}
+
+Although this project is a pure web project, it cannot be started by simply double-clicking on the entry file \texttt{index.html}, because modern browsers usually don't not allow local scripts to directly start \emph{Web Worker}s\footnote{ Web Workers are a simple means for web content to run scripts in background threads. // \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}} for security concerns. However, \emph{Web Worker} is being used in this project as simple means for doing heavy calculations in background threads without interfering with the \gls{ui}, therefore, in order to start the project, a simple \gls{http} server must be up and running on the local machine.
+
+It is also worth mentioning that this project should be running with Google Chrome browser as it supports most of the advanced visual effects and modern web technology syntax, known as \emph{HTML5}\footnote{ \url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5}}. The recommended version of Google Chrome is \path{76.0.x}.
+
+To start and keep a \gls{http} server running, the simplest and recommended way would be to use \emph{Python}'s \texttt{http.server}. To do that:
+
+// \url{https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server}
+
+\paragraph{Install Python} If you are using \emph{Linux} or \emph{macOS}, it should be available on the system already. If you are a \emph{Windows} user, \emph{Python} installer can be downloaded from the \emph{Python} homepage and the instructions can be followed to install it:
+
+\begin{itemize}
+  \item Go to \url{python.org}
+  \item Under the \emph{Download} section, click the link for \texttt{Python 3.xxx}.
+  \item At the bottom of the page, choose the \emph{Windows x86 executable installer} and download it.
+  \item When it has downloaded, run it.
+  \item On the first installer page, make sure you check the \emph{``Add Python 3.xxx to PATH''} checkbox.
+  \item Click \emph{Install}, then click \emph{Close} when the installation has finished.
+\end{itemize}
+
+\paragraph{Verification}
+
+Open a \emph{Command Prompt} (Windows) / \emph{Terminal} (macOS / Linux). To check \emph{Python} is installed, enter the following command:
+
+\begin{verbatim}
+  python -V
+\end{verbatim}
+
+\paragraph{Navigation}
+
+The above command should return a version number. If this is OK, navigate to the directory that the files of this project is inside, using the \texttt{cd} command.
+
+\begin{verbatim}
+  # include the directory name to enter it, for example
+  cd Desktop/fractals
+\end{verbatim}
+
+\paragraph{Start the Server}
+
+Enter the command to start up the server in that directory:
+
+\begin{verbatim}
+  # If Python version returned above is 3.X:
+  python -m http.server
+  
+  # Or simply:
+  py -m http.server
+
+  # If Python version returned above is 3.X
+  # and on non-Windows machines:
+  python3 -m http.server
+
+  # If Python version returned above is 2.X,
+  # or if on macOS using the default Python
+  # installed:
+  python -m SimpleHTTPServer
+\end{verbatim}
+
+By default, the above actions will run the contents of the directory where the files of this project are located on a local web server, on port $8000$. In order to view this project now, simply go to this server by going to the \gls{url} \texttt{localhost:8000} in your web browser, to be specific and recommended in Google Chrome. Here the project entry \texttt{index.html} will be run by default and users can see directly the result.
 
 %----------------------------------------------------------------------------------------
-%	SECTION 1
+%	SECTION 
 %----------------------------------------------------------------------------------------
 
 \section{Front End}
 
 Since this project is a pure web project, the front end occupies a large portion of the codes.
 
-%-----------------------------------
-%	SUBSECTION 1
-%-----------------------------------
 \subsection{HTML Entry \texttt{index.html}}
 
 The entry of the project is where this program gets started, in similar concept of the \texttt{main()} function in \texttt{C} or the \texttt{public static void main(String[] args)} function in \texttt{Java}. The entry point is a \gls{html} file and as expected named \texttt{index.html}. It introduces the front end structure of the project in raw.
@@ -158,9 +219,6 @@ After the visual \texttt{<div>} part, several \texttt{<script>} tags come after 
 
 Worth noting that conventionally all \gls{js} files should be included at the very end of the page as what we are doing now, unless the \gls{js} file is needed before the render phase of the web page. This way if the \gls{js} file is a little bit bigger than usual, the loading of the \gls{js} files won't affect the rendering process of the \gls{dom} documents.
 
-%-----------------------------------
-%	SUBSECTION 2
-%-----------------------------------
 
 \subsection{Main JavaScript \texttt{index.js}}
 
@@ -179,13 +237,13 @@ When instantiated, an instance of a native \emph{Web Worker}\footnote{ Web Worke
 The function \texttt{work(params...)} is the interface between \texttt{MandelWorker} and the outside invoker. To get an image from the source, one must invoke this function with the needed parameters as follows:
 
 \begin{itemize}
-    \item \texttt{magnif} The magnification level of the result image to be expected from the \emph{Web Worker}.
-    \item \texttt{centerX} The \texttt{x} component of the center coordinates on the mathmatical plane of the result image to be expected from the worker.
-    \item \texttt{centerY} The \texttt{y} component of this coordinates.
-    \item \texttt{width} The width in pixels of the result image.
-    \item \texttt{height} The height in pixels of the result image.
-    \item \texttt{callback} The function to execute when a result message is received.
-    \item \texttt{callbackThis} The ``this'' context where the \texttt{callback} function should be executed under.
+  \item \texttt{magnif} The magnification level of the result image to be expected from the \emph{Web Worker}.
+  \item \texttt{centerX} The \texttt{x} component of the center coordinates on the mathmatical plane of the result image to be expected from the worker.
+  \item \texttt{centerY} The \texttt{y} component of this coordinates.
+  \item \texttt{width} The width in pixels of the result image.
+  \item \texttt{height} The height in pixels of the result image.
+  \item \texttt{callback} The function to execute when a result message is received.
+  \item \texttt{callbackThis} The ``this'' context where the \texttt{callback} function should be executed under.
 \end{itemize}
 
 Here what's worth mentioning is the parameter \texttt{magnif}. The magnification level is a number representing the number of pixels that together has a length of $1$ on the mathmatical axis. As shown in \gmref{fig:magnif} is an image with the magnification level of $2$, since $2$ pixels have the length of $1$ on the mathmatical axis.
@@ -206,23 +264,86 @@ The function \texttt{workerResponse(e)} will be called when a response from the 
 
 \textbf{Function \texttt{destroy()}}
 
-The function \texttt{destroy()} as the name implies is the method to destroy and release the resources for current \texttt{MandelWorker}. It terminates the \emph{Web Worker}, sets the response method to \texttt{null} so no responses will be dealt furthermore and sets all other references to \texttt{null} as well so the internal \gls{js} engine can garbage collect\footnote{Include content of \url{https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)}} all these instance to avoid memory leakage when the calculation gets heavy.
+The function \texttt{destroy()} as the name implies is the method to destroy and release the resources for current \texttt{MandelWorker}. It terminates the \emph{Web Worker}, sets the response method to \texttt{null} so no responses will be dealt furthermore and sets all other references to \texttt{null} as well so the internal \gls{js} engine can garbage collect\footnote{ Include content of \url{https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)}} all these instance to avoid memory leakage when the calculation gets heavy.
 
 \subsubsection{Class \texttt{MapVisualPair}}
 
-An abstract concept of pairing a minimap\footnote{ Same concept in current project as an \emph{overview}. } with an active focus region with higher resolution.
+An abstract concept of pairing a minimap\footnote{ Same concept in current project as an \emph{overview}. } with an active focus region with higher resolution, as \gmref{fig:mapvisualpair} is an example of what they actually are respectively.
 
-\path{init(mapCanvas, previewCanvas, visCanvas = null)}
+\begin{figure}[th]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter4/mapvisualpair.png}
+\decoRule
+\caption[Map Visual Pair]{Map area image and visual area(current focus region) image.}
+\label{fig:mapvisualpair}
+\end{figure}
 
-\path{destroy()}
+The minimap representing a relatively ``larger'' area in the dataset and the visual area, which represents the active observing region, actually have both same resolution so they can both be displayed on a \gls{fhd} screen. Although the visual area seems ``smaller'' in comparison with the \gls{map} area, since it's an active region that is being observed by the user, the size of this visual area only represents its dimensions on the mathmatical plane and not smaller pixels-wise.
 
-\path{drawMapHoverArea(offsetRealX = 0, offsetRealY = 0)}
+The \gls{map} image, however, will normally be shrunk and put on the left side of the screen, till the user hovers over a specific \gls{map} that will trigger the preview process of this program so he can have a glance of this image in a \gls{fhd} way.
 
-\path{drawPreviewHoverArea(offsetRealX = 0, offsetRealY = 0)}
+The reason to pair up a visual area with a \gls{map} area is that whenever the user wants to browse around the dataset, the focusing coordinates on the visual area should also reflect back to the \gls{map} area, and the rectangle representing the current observing area should also get updated automatically. When there are more hierarchies of \glspl{map} present, this pairing mechanism becomes extremely helpful because the changes on the active region will flow all the way up to all levels of \glspl{map} necessary. Here \gmref{fig:mvp-pairflow} is a simple illustration of it.
 
-\path{moveTo(x = null, y = null)}
+\begin{figure}[th]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter4/mvp-pairflow.png}
+% \includegraphics{Figures/Chapter4/mvp-pairflow.png}
+\decoRule
+\caption[Pairing Multiple Levels of \glspl{map}]{When multiple hierarchies of \glspl{map} present, visual area changes, all \glspl{map} changes.}
+\label{fig:mvp-pairflow}
+\end{figure}
 
-\subsubsection{Class \texttt{MinimapManager}}
+\textbf{Function} \verb|init(mapCanvas, previewCanvas, visCanvas = null)|
+
+This function will initialize the current \texttt{MapVisualPair}, bounding a \texttt{mapCanvas}, a \texttt{previewCanvas} and a \texttt{visCanvas} all of type \texttt{<canvas>} element to this class. When internally a drawing action should be performed, related images will be drawn on corresponding canvas.
+
+The canvas \texttt{mapCanvas} will be used to draw the shrunk version of the \gls{map} image. \texttt{previewCanvas} will be used to draw the normal(\gls{fhd}) version of the \gls{map} image. And \texttt{visCanvas} will be used to draw the visual area image in \gls{fhd} if set.
+
+After bounding the canvases, this function will also check if any event handlers are bound to the events \texttt{mouseover} and \texttt{mouseout} to the \texttt{mapCanvas} element, and record corresponding info to the element to avoid attemps to rebound event handlers to the same \texttt{<canvas>} element. In this way, only one event handler for \texttt{mouseover} and \texttt{mouseout} will be triggered when the user hovers their mouse on the \texttt{<canvas>} and when the user put their cursor out of the element.
+
+The handlers this function is going to bound to the \texttt{mapCanvas} element are going to first add \gls{css} class \texttt{.nearby} to adjacent siblings of this canvas, and check if any additional callbacks this class should call. The callbacks, if any, which are set in the private properties \texttt{mouseOverCallback} and \texttt{mouseOutCallback}, will be called under set context \texttt{mouseOverCallbackThis} and \texttt{mouseOutCallbackThis} when user performs corresponding actions. As mentioned before, they will also be called only once because the bounding information is recorded. In the project, these callbacks and the contexts of them are set by a manager class \ref{chap4:effectmanager} \nameref{chap4:effectmanager}.
+
+\textbf{Function} \verb|destroy()|
+
+This function as the name implies releases all in-use resources, including \texttt{Worker}s, unbinding bound event handlers, clearing references to the canvases and their 2d contexts.
+
+\textbf{Function} \verb|drawMapHoverArea(offsetRealX = 0, offsetRealY = 0)|
+
+When the class is told to draw images on corresponding canvas elements, it will not automatically draw the purple rectangle indicating the current observing visual area, since the cached image data does not include this rectangle --- it doesn't belong to the extreme resolution dataset itself, therefore, this function exists to draw this current focus area using a purple rectangle to indicate it, drawing this rectangle on the \texttt{mapCanvas} whenever invoked. Note that whenever the image from the calculation side is fetched, without invoking this function, no current obeserving area rectangle will be shown, since the newly fetched image data will cover the old one also the old drawn rectangle.
+
+The parameters \texttt{offsetRealX} and \texttt{offsetRealY} can also be set, as the purple rectangle to be drawn will then have an offset of (\texttt{offsetRealX}, \texttt{offsetRealY}) with respect to the center of the current observing area on the mathmatical complex plane.
+
+\textbf{Function} \verb|drawPreviewHoverArea(offsetRealX = 0, offsetRealY = 0)|
+
+Like the function \texttt{drawMapHoverArea}, this function will also draw a rectangle representing the current observing visual area, but on another canvas \texttt{previewCanvas}. The reason to separate these two functions is that the canvas \texttt{previewCanvas} isn't always visible and if these two functions are combined, it'll draw unintended purple rectangles on wrong canvases.
+
+\textbf{Function} \verb|moveTo(x = null, y = null)|
+
+This function is used to move the current \texttt{MapVisualPair} around. The parameters of coordinates are on the mathmatical complex plane, i.e. with respect to the entire datasets.
+
+Note that these two parameters can be omitted and when omitted, the current \texttt{MapVisualPair} will simply send a ping to the calculation side and grab new image data for current observing coordinates, like a ``refresh'' action.
+
+\textbf{Properties} \texttt{visMagnif} and \texttt{mapMagnif}
+
+The magnification for the pair of these two canvases. See \gmref{fig:magnif} for the explanation of magnification level.
+
+\textbf{Properties} \texttt{visCenterX} and \texttt{visCenterY}
+
+The coordinates of the center point of the current observing visual area, with respect to the mathmatical complex plane.
+
+\textbf{Properties} \texttt{visCanvasWidth} and \texttt{visCanvasHeight}
+
+The width and height in \textbf{pixels} of the image data of the whole visual area. In \gmref{fig:mapvisualpair}, they're the dimensions of the whole visual area image. These properties have to exist because the dimensions of this area cannot always be fetched from the \texttt{visCanvas} property, as it is an optional parameter during the \texttt{init(params..)} phase and sometimes is absent.
+
+\textbf{Properties} \texttt{visImgOffsetX} and \texttt{visImgOffsetY}
+
+These two properties are set for the dragging actions that are realized in \ref{chap4:minimapmanager} \nameref{chap4:minimapmanager}. They represents the current dragging offset with respect to the top left corner of the \texttt{visCanvas}. The reference point being top left corner not the center point is because in web canvas drawing system, the (0, 0) point is the top left corner, unlike in mathmatical complex plane it being the center.
+
+\textbf{Properties} \texttt{mapCenterX} and \texttt{mapCenterY}
+
+Like the properties \texttt{visCenterX} and \texttt{visCenterY}, these two properties represents the coordinates of the center point of the current \gls{map} area, with respect to the mathmatical complex plane. In \gmref{fig:mapvisualpair}, they're the center coordinates of the \gls{map} image.
+
+\subsubsection{Class \texttt{MinimapManager}}\label{chap4:minimapmanager}
 
 The manager class of all the minimaps, controlling all their behaviours on the top level.
 
@@ -255,7 +376,7 @@ The manager class of all the minimaps, controlling all their behaviours on the t
 \path{pairMainStepWheel()}
 
 
-\subsubsection{Class \texttt{EffectManager}}
+\subsubsection{Class \texttt{EffectManager}}\label{chap4:effectmanager}
 
 This class manages the behaviours, activation and deactivation of the overview effects and the preview effects of the overviews.
 
@@ -277,6 +398,22 @@ Tabs effects specific functions: \texttt{initTabs()}, \texttt{destroyTabs()}, \t
 
 \subsubsection{Instantiation, Variables And the Rest}
 
+\begin{itemize}
+  \item \texttt{screenWidth}
+  \item \texttt{screenHeight}
+  \item \texttt{mapWidth}
+  \item \texttt{mapHeight}
+  \item \texttt{controlPanelWidth}
+  \item \texttt{visMagnif}
+  \item \texttt{mapMagnif}
+  \item \texttt{hoverX}
+  \item \texttt{hoverY}
+  \item \texttt{mainCanvas}
+  \item \texttt{previewCanvas}
+  \item \texttt{\$(`\#visual-container')}
+  \item \texttt{\$(`\#maps-container')}
+\end{itemize}
+
 \subsection{CSSs For Overview Effects}
 \label{chap4:frontend-css}
 
@@ -291,7 +428,7 @@ File \texttt{./css/common.css} first sets up all general appearance of the eleme
 \subsection{Tabs Effect}
 
 %----------------------------------------------------------------------------------------
-%	SECTION 2
+%	SECTION 
 %----------------------------------------------------------------------------------------
 
 \section{Back End Calculation}
@@ -300,7 +437,7 @@ The back end calculation is done in the \gls{js} file \texttt{naive-worker.js}. 
 
 \begin{figure}[th]
 \centering
-\includegraphics[keepaspectratio]{Figures/Chapter4/messageexchange.png}
+\includegraphics{Figures/Chapter4/messageexchange.png}
 \decoRule
 \caption[Message Exchange]{Message exchange between \texttt{index.js} and \texttt{naive-worker.js}.}
 \label{fig:messageexchange}
@@ -328,6 +465,10 @@ See \gmref{fig:messageexchange}.
 
 \subsection{High Precision Version}
 
+%----------------------------------------------------------------------------------------
+%	SECTION 
+%----------------------------------------------------------------------------------------
+
 \section{Utility Assets}
 
 Other open source third-party utilities lie in different folders with corresponding names.
@@ -337,7 +478,7 @@ Other open source third-party utilities lie in different folders with correspond
 In \texttt{./js} folder, all \gls{js} third-party files are here, including:
 
 \begin{itemize}
-    \item File \texttt{decimal.min.js} is for high-precision floating points calculation for \glsdesc{js}.
+    \item File \texttt{decimal.min.js} is for high-precision floating points calculation for \acrfull{js}.
     \item File \texttt{jquery-3.4.1.min.js} is for \gls{dom} traversal and manipulation, event handling and animation.
     \item File \texttt{bootstrap.bundle.min.js} is for some basic styling of the control panel sitting on top right corner of the screen.
 \end{itemize}

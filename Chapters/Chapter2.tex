@@ -8,23 +8,40 @@
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Main Section 1}
+\section{Mandelbrot Set}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac risus convallis pellentesque.
+The Mandelbrot set is a famous example of a fractal in mathematics. It is named after Beno\^{\i}t Mandelbrot, a Polish-French-American mathematician.\footnote{ // \url{https://simple.wikipedia.org/wiki/Mandelbrot_set}}. The reason this thesis is using Mandelbrot set as the source of extreme resolution dataset is because Mandelbrot set can provide theoretically infitely high resolution datasets. In this section, we'll introduce briefly Mandelbrot set, its algorithms ideas for visualization.
 
-%-----------------------------------
-%	SUBSECTION 1
-%-----------------------------------
-\subsection{Subsection 1}
+\subsection{What Is Mandelbrot Set}
 
-Nunc posuere quam at lectus tristique eu ultrices augue venenatis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Vivamus sodales tortor eget quam adipiscing in vulputate ante ullamcorper. Sed eros ante, lacinia et sollicitudin et, aliquam sit amet augue. In hac habitasse platea dictumst.
+First we define a sequence
 
-%-----------------------------------
-%	SUBSECTION 2
-%-----------------------------------
+\[z_n, n = 0, 1, 2 ..\]
 
-\subsection{Subsection 2}
+The initial value of $z$ is $z_0 = 0$. And then
+
+\[z_1 = z_0^2 + c = c\]
+
+Where $c$ is a constant in the complex plane.
+
+The rest of $z_n$ is as follows:
+
+\[z_{n+1} = z_n^2 + c\]
+
+For different constant $c$, the absolute value of $z_n$ could remain bounded however large $n$ gets or be divergent.
+
+The Mandelbrot set is the set of values of $c$ in the complex plane for which this sequence remains bounded.
+
+\subsection{Used Characteristic of the Mandelbrot Set}
 Morbi rutrum odio eget arcu adipiscing sodales. Aenean et purus a est pulvinar pellentesque. Cras in elit neque, quis varius elit. Phasellus fringilla, nibh eu tempus venenatis, dolor elit posuere quam, quis adipiscing urna leo nec orci. Sed nec nulla auctor odio aliquet consequat. Ut nec nulla in ante ullamcorper aliquam at sed dolor. Phasellus fermentum magna in augue gravida cursus. Cras sed pretium lorem. Pellentesque eget ornare odio. Proin accumsan, massa viverra cursus pharetra, ipsum nisi lobortis velit, a malesuada dolor lorem eu neque.
+
+\subsection{Graphical Presentation}
+
+Sit deserunt mollit eu magna sit irure incididunt proident aliqua aute. Aliquip commodo duis fugiat et nulla labore qui id occaecat. Quis cupidatat dolor sit Lorem dolor sit Lorem. Esse esse voluptate aliquip minim laboris do officia labore. Occaecat Lorem quis velit anim dolore ex nisi. Eu esse sint elit proident ea deserunt et. Id velit voluptate exercitation voluptate eu et ea occaecat elit esse deserunt elit.
+
+\subsection{Algorithms For Visualization}
+
+Ex consectetur pariatur elit dolor cillum cillum non duis laboris incididunt fugiat. Laboris non elit consequat nostrud aliqua quis non ex culpa ad labore consequat. Irure veniam irure nostrud amet esse occaecat. Culpa dolor voluptate reprehenderit exercitation amet dolor exercitation officia tempor deserunt non incididunt voluptate.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2

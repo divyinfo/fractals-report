@@ -53,7 +53,8 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{float}
 
 \usepackage{tabu}
-\usepackage{glossaries}
+\usepackage[nonumberlist,acronym,section]{glossaries}
+% \usepackage[toc,nonumberlist,acronyms]{glossaries}
 
 \usepackage{listings}
 \lstset{
@@ -92,6 +93,9 @@ headsepline, % Uncomment to get a line under the header
 % Maximum nesting numbers. E.g. 1.1.1.1 Section Title
 \setcounter{secnumdepth}{3}
 % \setcounter{tocdepth}{3}
+
+\let\subsectionautorefname\sectionautorefname
+\let\subsubsectionautorefname\sectionautorefname
 
 %----------------------------------------------------------------------------------------
 %	THESIS INFORMATION
@@ -255,9 +259,9 @@ Department Engineering\\[2cm] % Research group name and department name
 
 In this thesis, three main overview techniques and two secondary preview techniques of the overviews are developed and implemented using the Mandelbrot set as the source of extreme resolution datasets. For these datasets, a hierarchical structure is used to present the index information of the current region of interest. Using the developed software in this thesis, it is possible to intuitively understand the hierarchical state of the current observing area with the whole. This thesis also compares the different overview techniques which in combination consists of six different ways.
 
-\noindent It is worth mentioning that the Mandelbrot set that are implemented in this thesis is a very good example for extreme high resolution datasets because it is a dataset that can theoretically provide infinitely high resolution.
+It is worth mentioning that the Mandelbrot set that are implemented in this thesis is a very good example for extreme high resolution datasets because it is a dataset that can theoretically provide infinitely high resolution.
 
-\noindent The technology stack used in this thesis is pure web technology, a classic combination of \texttt{HTML} / \texttt{JavaScript} / \texttt{CSS}, and the program offers the possibility to adapt and replace the pure front-end technology with front and back end separation solution easily.
+The technology stack used in this thesis is pure web technology, a classic combination of \texttt{HTML} / \texttt{JavaScript} / \texttt{CSS}, and the program offers the possibility to adapt and replace the pure front-end technology with front and back end separation solution easily.
 
 \end{abstract}
 
@@ -267,10 +271,10 @@ In this thesis, three main overview techniques and two secondary preview techniq
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-% The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
-I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens Krüger, for your valuable guidance, encouragement and support. Your patience and faith in me was a key reason that I could finish the work.
+The acknowledgments and the people to thank go here %, don't forget to include your project advisor\ldots
+% I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens Krüger, for your valuable guidance, encouragement and support. Your patience and faith in me was a key reason that I could finish the work.
 
-\noindent Also I express my thanks to Prof. Dr. Yunqi Lei, Dr. Bixia Wu and Dr. Franz-Josef Schmitz, in no particular order. Without your support, I could not have finished the task successfully.
+% Also I express my thanks to Prof. Dr. Yunqi Lei, Dr. Bixia Wu and Dr. Franz-Josef Schmitz, in no particular order. Without your support, I could not have finished the task successfully.
 \end{acknowledgements}
 
 %----------------------------------------------------------------------------------------
@@ -298,58 +302,81 @@ I hereby express my deep sense of gratitude and indebtedness to Prof. Dr. Jens K
 
 \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{HTML}\label{glo:html} & \textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage\\
-\textbf{JS}\label{glo:js} & \textbf{J}ava\textbf{S}cript\\
-\textbf{CSS}\label{glo:css} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets\\
-\textbf{DOM}\label{glo:dom} & \textbf{D}ocument \textbf{O}bject \textbf{M}odel\\
-\textbf{URL}\label{glo:url} & \textbf{U}niform \textbf{R}esource \textbf{L}ocator\\
-\textbf{JSON}\label{glo:json} & \textbf{J}ava \textbf{S}cript \textbf{O}bject \textbf{N}otation\\
-\textbf{UI}\label{glo:ui} & \textbf{U}ser \textbf{I}nterface\\
-
-\newglossaryentry{html}{name = {HTML}, description = {Hypertext Markup Language}}
-\newglossaryentry{js}{name = {JS}, description = {JavaScript}}
-\newglossaryentry{css}{name = {CSS}, description = {Cascading Style Sheets}}
-\newglossaryentry{dom}{name = {DOM}, description = {Document Object Model}}
-\newglossaryentry{url}{name = {URL}, description = {Uniform Resource Locator}}
-\newglossaryentry{json}{name = {JSON}, description = {Java Script Object Notation}}
-\newglossaryentry{ui}{name = {UI}, description = {User Interface}}
+% \textbf{HTML} & \textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage\\
+% \textbf{JS} & \textbf{J}ava\textbf{S}cript\\
+% \textbf{CSS} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets\\
 
 \end{abbreviations}
+
+% \newglossaryentry{html}{name = {HTML}, description = {\textbf{H}ypertext \textbf{M}arkup \textbf{L}anguage}}
+% \newglossaryentry{js}{name = {JS}, description = {JavaScript}}
+% \newglossaryentry{css}{name = {CSS}, description = {Cascading Style Sheets}}
+% \newglossaryentry{dom}{name = {DOM}, description = {Document Object Model}}
+% \newglossaryentry{url}{name = {URL}, description = {Uniform Resource Locator}}
+% \newglossaryentry{json}{name = {JSON}, description = {Java Script Object Notation}}
+% \newglossaryentry{ui}{name = {UI}, description = {User Interface}}
+
+\newacronym{html}{HTML}{Hypertext Markup Language}
+\newacronym{js}{JS}{JavaScript}
+\newacronym{css}{CSS}{Cascading Style Sheets}
+\newacronym{dom}{DOM}{Document Object Model}
+\newacronym{url}{URL}{Uniform Resource Locator}
+\newacronym{json}{JSON}{Java Script Object Notation}
+\newacronym{ui}{UI}{User Interface}
+\newacronym{http}{HTTP}{Hypertext Transfer Protocol}
+
+\newglossaryentry{map}{name = {Map}, description = {MiniMap / Overview}}
+\newglossaryentry{fhd}{name = {Full HD}, description = {\texttt{1920 x 1080} px; also known as \textbf{Full HD} or \textbf{FHD} and \textbf{BT.709}}}
+
+\glsaddall
+% \glsunsetall
+
+% altlist
+% altlistgroup, listgroup
+% altlisthypergroup, listhypergroup
+% \setglossarystyle{altlisthypergroup}
+
+{
+	\hypersetup{linkcolor = red!40!black}
+	\printacronyms
+	\printglossary
+	% \printglossary[title={List of Terms},toctitle={Terms and abbreviations}]
+}
 
 %----------------------------------------------------------------------------------------
 %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
 %----------------------------------------------------------------------------------------
 
-\begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+% \begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
 
-% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
+% % The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
 
-Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
-%Constant Name & $Symbol$ & $Constant Value$ with units\\
+% Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
+% %Constant Name & $Symbol$ & $Constant Value$ with units\\
 
-\end{constants}
+% \end{constants}
 
 %----------------------------------------------------------------------------------------
 %	SYMBOLS
 %----------------------------------------------------------------------------------------
 
-\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+% \begin{symbols}{lll} % Include a list of Symbols (a three column table)
 
-$a$ & distance & \si{\meter} \\
-$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
-%Symbol & Name & Unit \\
+% $a$ & distance & \si{\meter} \\
+% $P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+% %Symbol & Name & Unit \\
 
-\addlinespace % Gap to separate the Roman symbols from the Greek
+% \addlinespace % Gap to separate the Roman symbols from the Greek
 
-$\omega$ & angular frequency & \si{\radian} \\
+% $\omega$ & angular frequency & \si{\radian} \\
 
-\end{symbols}
+% \end{symbols}
 
 %----------------------------------------------------------------------------------------
 %	DEDICATION
 %----------------------------------------------------------------------------------------
 
-\dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Mrs. Vivian E. Rice, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
+% \dedicatory{Special thanks to Dr. Zhonghua Xu, Ms. Meng Wang and Mrs. Vivian E. Rice, I wish I could share the joy of this achievements with all of you - here or in Azeroth.} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS
