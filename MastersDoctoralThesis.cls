@@ -372,6 +372,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 			{\normalsize\bfseries \@title \par}% Thesis title
 			\medskip
 			{\normalsize \byname{} \authorname \par}% Author name
+			{\footnotesize Matr. No. 2265625\\\href{mailto:danyun.lei@stud.uni-due.de}{danyun.lei@stud.uni-due.de} \par}% Author name
 			\bigskip
 		\end{center}
 	}

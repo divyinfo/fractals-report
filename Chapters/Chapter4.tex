@@ -26,11 +26,16 @@ The folder names and file names are mostly self-explanatory or conventional in t
 
 \paragraph{Folder \texttt{./.vscode}}
 
-The configured Visual Studio Code workspace settings file. This file is included and stored inside the workspace and only apply when the workspace is opened which overrides Visual Studio Code's default user settings. The author tweaked this file to make some parts of VS Code's editor, user interface, and functional behavior more fitting to review or to base future work upon this project.
+The configured Visual Studio Code workspace settings file. This file is included and stored inside the workspace and only apply when the workspace is opened which overrides Visual Studio Code's default user settings. The author tweaked this file to make some parts of VS Code's editor, user interface, and functional behavior more fitting to review or to base future work upon this project\footnote{ To learn more about this file, see \url{https://code.visualstudio.com/docs/getstarted/settings}.}. 
 
-\begin{verbatim}
-// https://code.visualstudio.com/docs/getstarted/settings
-\end{verbatim}
+VS Code provides two different scopes for settings:
+
+\begin{itemize}
+  \item User Settings - Settings that apply globally to any instance of VS Code you open.
+  \item Workspace Settings - Settings stored inside your workspace and only apply when the workspace is opened.
+\end{itemize}
+
+Workspace settings override user settings\cite{bib:ms:vscode}.
 
 \paragraph{Folder \texttt{./js}}
 
@@ -59,11 +64,7 @@ Assets of the open source project \emph{Bootstrap} by \emph{Twitter}. This depen
 
 \paragraph{Folder \texttt{./node\_modules}}
 
-Packages pulled from the \gls{js} dependency management tool \emph{npm} are stored in this folder. The required dependency here is the package \texttt{minibarjs} under this folder -- in folder \texttt{./node\_modules/minibarjs}. Conventionally this folder shouldn't be included or committed to the version control system\footnote{ This is actually also what this project is following. }, because all the packages info are recorded in the file \texttt{package.json} and \texttt{package-lock.json} and if any dependencies are missing, running the \emph{npm} command \texttt{npm install} should be able to pull all necessary dependencies into this folder, however, considering this project sometimes can be run in an environment without internet connection, this folder is included in the final static zipped package.
-
-\begin{verbatim}
-// https://www.npmjs.com/
-\end{verbatim}
+Packages pulled from the \gls{js} dependency management tool \emph{npm}\footnote{ Build amazing things --- Essential JavaScript development tools that help you go to market faster and build powerful applications using modern open source code\cite{bib:npm:npm}. Too know more about \emph{npm}, see \url{https://www.npmjs.com/}.} are stored in this folder. The required dependency here is the package \texttt{minibarjs} under this folder -- in folder \texttt{./node\_modules/minibarjs}. Conventionally this folder shouldn't be included or committed to the version control system\footnote{ This is actually also what this project is following. }, because all the packages info are recorded in the file \texttt{package.json} and \texttt{package-lock.json} and if any dependencies are missing, running the \emph{npm} command \texttt{npm install} should be able to pull all necessary dependencies into this folder, however, considering this project sometimes can be run in an environment without internet connection, this folder is included in the final static zipped package.
 
 \paragraph{Folder \texttt{./exp}}
 
@@ -85,12 +86,7 @@ The back end calculation \gls{js} script. The only job of this script is to rece
 
 \paragraph{File \texttt{package.json}}
 
-A description file of the \gls{js} package management tool \emph{npm}. This file can have many descriptions about what \emph{npm} should do for this workspace but here it most importantly specifies which packages to pull from the global repository. 
-
-\begin{verbatim}
-// Description of npm - package.json
-// https://docs.npmjs.com/files/package.json
-\end{verbatim}
+A description file of the \gls{js} package management tool \emph{npm}. This file can have many descriptions about what \emph{npm} should do for this workspace\footnote{ For for detailed information, see \url{https://docs.npmjs.com/files/package.json}.} but here it most importantly specifies which packages to pull from the global repository, in the \gls{json} field \texttt{'dependencies'}. Dependencies are specified in a simple object that maps a package name to a version range. The version range is a string which has one or more space-separated descriptors. Dependencies can also be identified with a tarball or git URL\cite{bib:npm:packagejson}.
 
 \paragraph{File \texttt{package-lock.json}}
 
@@ -124,13 +120,11 @@ Version control settings file, telling which files should not be committed to \e
 
 \section{Start the Project}
 
-Although this project is a pure web project, it cannot be started by simply double-clicking on the entry file \texttt{index.html}, because modern browsers usually don't not allow local scripts to directly start \emph{Web Worker}s\footnote{ Web Workers are a simple means for web content to run scripts in background threads. // \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}} for security concerns. However, \emph{Web Worker} is being used in this project as simple means for doing heavy calculations in background threads without interfering with the \gls{ui}, therefore, in order to start the project, a simple \gls{http} server must be up and running on the local machine.
+Although this project is a pure web project, it cannot be started by simply double-clicking on the entry file \texttt{index.html}, because modern browsers usually don't not allow local scripts to directly start \emph{Web Worker}s\footnote{ Web Workers are a simple means for web content to run scripts in background threads.\cite{bib:moz:webworker}} for security concerns. However, \emph{Web Worker} is being used in this project as simple means for doing heavy calculations in background threads without interfering with the \gls{ui}, therefore, in order to start the project, a simple \gls{http} server must be up and running on the local machine.
 
-It is also worth mentioning that this project should be running with Google Chrome browser as it supports most of the advanced visual effects and modern web technology syntax, known as \emph{HTML5}\footnote{ \url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5}}. The recommended version of Google Chrome is \path{76.0.x}.
+It is also worth mentioning that this project should be running with Google Chrome browser as it supports most of the advanced visual effects and modern web technology syntax, known as \emph{HTML5}\footnote{ See \url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5} for more detailed information.}. The recommended version of Google Chrome is \path{76.0.x}.
 
-To start and keep a \gls{http} server running, the simplest and recommended way would be to use \emph{Python}'s \texttt{http.server}. To do that:
-
-// \url{https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server}
+To start and keep a \gls{http} server running, the simplest and recommended way would be to use \emph{Python}'s \texttt{http.server}. To do that\cite{bib:moz:simplehttp}:
 
 \paragraph{Install Python} If you are using \emph{Linux} or \emph{macOS}, it should be available on the system already. If you are a \emph{Windows} user, \emph{Python} installer can be downloaded from the \emph{Python} homepage and the instructions can be followed to install it:
 
@@ -230,7 +224,7 @@ There in total four classes defined.
 
 The class \texttt{MandelWorker} is in charge of sending a message to the back end and when a result is sent back, doing some other actions.
 
-When instantiated, an instance of a native \emph{Web Worker}\footnote{ Web Workers are a simple means for web content to run scripts in background threads. // \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}} will also be created as a private property of this class. \texttt{MandelWorker} instantiates the \emph{Web Worker} by the script \texttt{naive\-worker.js}, which means that the script \texttt{naive\-worker.js} will be the core of the worker and this worker will be doing whatever in that script when it is asked to.
+When instantiated, an instance of a native \emph{Web Worker} will also be created as a private property of this class. \texttt{MandelWorker} instantiates the \emph{Web Worker} by the script \texttt{naive\-worker.js}, which means that the script \texttt{naive\-worker.js} will be the core of the worker and this worker will be doing whatever in that script when it is asked to\footnote{ See \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers\#Spawning_a_dedicated_worker} for more detailed information of the process of instantiating a \emph{Web Worker}.}.
 
 \textbf{Function \texttt{work(params...)}}
 
@@ -264,7 +258,7 @@ The function \texttt{workerResponse(e)} will be called when a response from the 
 
 \textbf{Function \texttt{destroy()}}
 
-The function \texttt{destroy()} as the name implies is the method to destroy and release the resources for current \texttt{MandelWorker}. It terminates the \emph{Web Worker}, sets the response method to \texttt{null} so no responses will be dealt furthermore and sets all other references to \texttt{null} as well so the internal \gls{js} engine can garbage collect\footnote{ Include content of \url{https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)}} all these instance to avoid memory leakage when the calculation gets heavy.
+The function \texttt{destroy()} as the name implies is the method to destroy and release the resources for current \texttt{MandelWorker}. It terminates the \emph{Web Worker}, sets the response method to \texttt{null} so no responses will be dealt furthermore and sets all other references to \texttt{null} as well so the internal \gls{js} engine can garbage collect\footnote{ In computer science, garbage collection (GC) is a form of automatic memory management. The garbage collector, or just collector, attempts to reclaim garbage, or memory occupied by objects that are no longer in use by the program\cite{wiki:gc}.} all these instance to avoid memory leakage when the calculation gets heavy.
 
 \subsubsection{Class \texttt{MapVisualPair}}
 

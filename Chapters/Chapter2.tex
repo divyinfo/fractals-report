@@ -5,7 +5,19 @@
 \label{Chapter2} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 %----------------------------------------------------------------------------------------
-%	SECTION 1
+%	SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Web Technology Stack}
+
+%----------------------------------------------------------------------------------------
+%	SECTION
+%----------------------------------------------------------------------------------------
+
+\section{HTML5 And Canvas API}
+
+%----------------------------------------------------------------------------------------
+%	SECTION
 %----------------------------------------------------------------------------------------
 
 \section{Mandelbrot Set}
@@ -32,21 +44,61 @@ For different constant $c$, the absolute value of $z_n$ could remain bounded how
 
 The Mandelbrot set is the set of values of $c$ in the complex plane for which this sequence remains bounded.
 
-\subsection{Used Characteristic of the Mandelbrot Set}
-Morbi rutrum odio eget arcu adipiscing sodales. Aenean et purus a est pulvinar pellentesque. Cras in elit neque, quis varius elit. Phasellus fringilla, nibh eu tempus venenatis, dolor elit posuere quam, quis adipiscing urna leo nec orci. Sed nec nulla auctor odio aliquet consequat. Ut nec nulla in ante ullamcorper aliquam at sed dolor. Phasellus fermentum magna in augue gravida cursus. Cras sed pretium lorem. Pellentesque eget ornare odio. Proin accumsan, massa viverra cursus pharetra, ipsum nisi lobortis velit, a malesuada dolor lorem eu neque.
+\subsection{Important Properties of the Mandelbrot Set}
 
-\subsection{Graphical Presentation}
+A property of Mandelbrot set is as follows:
 
-Sit deserunt mollit eu magna sit irure incididunt proident aliqua aute. Aliquip commodo duis fugiat et nulla labore qui id occaecat. Quis cupidatat dolor sit Lorem dolor sit Lorem. Esse esse voluptate aliquip minim laboris do officia labore. Occaecat Lorem quis velit anim dolore ex nisi. Eu esse sint elit proident ea deserunt et. Id velit voluptate exercitation voluptate eu et ea occaecat elit esse deserunt elit.
+A complex number $c$ belongs to the Mandelbrot set $M$, if and only if the absolute value of $z_n$ is not larger than $2$, for all $n = 0, 1, 2, ..$
 
-\subsection{Algorithms For Visualization}
+\subsection{Simple Graphical Presentation}
 
-Ex consectetur pariatur elit dolor cillum cillum non duis laboris incididunt fugiat. Laboris non elit consequat nostrud aliqua quis non ex culpa ad labore consequat. Irure veniam irure nostrud amet esse occaecat. Culpa dolor voluptate reprehenderit exercitation amet dolor exercitation officia tempor deserunt non incididunt voluptate.
+The following figure \gmref{fig:mandelbrot} is a simple graphical representation of Mandelbrot set. A point $c$ in the complex plane is conventionally colored \emph{black} if it belongs to the Mandelbrot set $M$, and \emph{white} if not. 
 
-%----------------------------------------------------------------------------------------
-%	SECTION 2
-%----------------------------------------------------------------------------------------
+\begin{figure}[th]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter2/mandelbrot.png}
+% \includegraphics{Figures/Chapter2/mandelbrot.png}
+\decoRule
+\caption[Mandelbrot Set Graphical Presentation]{A simple graphical representation of Mandelbrot set.}
+\label{fig:mandelbrot}
+\end{figure}
 
-\section{Main Section 2}
+\subsection{Algorithms For Visualization}\label{chap2:algorithmsforvisualization}
 
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus vehicula hendrerit.
+For all $c$ in complex plane:
+
+~~~~For each $c$, we calculate sequence $z_n, n = 0, 1, .., max$:
+
+~~~~~~~~$z_0 = 0$, (initial value),
+
+~~~~~~~~$z_{n+1} = z_n^2 + c$
+
+~~~~~~~~If the value of $z_{n+1}$ is larger than $2$, then:
+
+~~~~~~~~~~~~\begin{minipage}[t]{0.9\textwidth} $c$ does not belong to $M$. In this case, we set the color of $c$ to \emph{white} and the calculation of sequence is stopped. \end{minipage}
+
+~~~~~~~~If $n = max$, then:
+
+~~~~~~~~~~~~$c$ belongs to $M$ and we set the color of $c$ to \emph{black}.
+
+\subsection{Algorithms Idea For Graphical Representation with Grayscale}
+
+In the above algorithm in \ref{chap2:algorithmsforvisualization} \nameref{chap2:algorithmsforvisualization}, $c$ is set to either \emph{black} or \emph{white}. If the iteration number $n$ is equal to the maximum iteration number $max$ and the value of $z_n$ still less than $2$, then $c$ has the color \emph{black}. If the iteration number $n$ is smaller than $max$ then at this moment the absolute value of $z_n$ becomes larger than $2$. In this case, we cannot set the color of $c$ to \emph{black}, because $c$ dose not belong to Mandelbrot set. However, we set a color with a portion of \emph{black}, to indicate how close $c$ is to be in \emph{black} area.
+
+For all $c$ in complex plane:
+
+~~~~For each $c$, we calculate sequence $z_n, n = 0, 1, .., max$:
+
+~~~~~~~~$z_0 = 0$, (initial value),
+
+~~~~~~~~$z_{n+1} = z_n^2 + c$
+
+~~~~~~~~If the value of $z_{n+1}$ is larger than $2$, then:
+
+\begingroup
+    \leftskip=3em $c$ does not belong to $M$. In this case, we set the color of $c$ to \st{\emph{white}} \emph{grayscale\footnote{ In the current implementation, this color is set to be grayscaled red, rgb($grayscale\% \times 255$, 0, 0).} depending on the number of iteration} $n$ and the calculation of sequence is stopped.\par
+\endgroup
+
+~~~~~~~~If $n = max$, then:
+
+~~~~~~~~~~~~$c$ belongs to $M$ and we set the color of $c$ to \emph{black}.
