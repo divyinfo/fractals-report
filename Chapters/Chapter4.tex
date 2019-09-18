@@ -118,7 +118,7 @@ Version control settings file, telling which files should not be committed to \e
 %	SECTION 
 %----------------------------------------------------------------------------------------
 
-\section{Start the Project}
+\section{Start the Project}\label{chap4:starttheproject}
 
 Although this project is a pure web project, it cannot be started by simply double-clicking on the entry file \texttt{index.html}, because modern browsers usually don't not allow local scripts to directly start \emph{Web Worker}s\footnote{ Web Workers are a simple means for web content to run scripts in background threads.\cite{bib:moz:webworker}} for security concerns. However, \emph{Web Worker} is being used in this project as simple means for doing heavy calculations in background threads without interfering with the \gls{ui}, therefore, in order to start the project, a simple \gls{http} server must be up and running on the local machine.
 
@@ -390,7 +390,7 @@ Stacked Cards effects specific functions: \texttt{initStacked()}, \texttt{destro
 
 Tabs effects specific functions: \texttt{initTabs()}, \texttt{destroyTabs()}, \texttt{updateTabs()}
 
-\subsubsection{Instantiation, Variables And the Rest}
+\subsubsection{Instantiation, Variables and the Rest}
 
 \begin{itemize}
   \item \texttt{screenWidth}
@@ -408,7 +408,7 @@ Tabs effects specific functions: \texttt{initTabs()}, \texttt{destroyTabs()}, \t
   \item \texttt{\$(`\#maps-container')}
 \end{itemize}
 
-\subsection{CSSs For Overview Effects}
+\subsection{CSSs for Overview Effects}
 \label{chap4:frontend-css}
 
 Folder \texttt{./css} includes five \gls{css} files, each setting up some visual effects of the project.
