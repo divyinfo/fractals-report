@@ -139,33 +139,33 @@ The Canvas \gls{api} itself is a sense of how to use scripts to draw on this new
 
 As for the datasets themselves, we use a kind of computable dataset instead of a static and deep zoomable image information dataset. The advantage is obvious that by using a dataset that can be computed for its information of any specific point in the set, we don't have to store the information anywhere anymore, as if we did, it would require a lot of investment and investigation for the storage or fetching of the dataset for this project. The downside of it is also clear that we'll have to trade time for space, since the calculation is usually going to take more time than only querying from a static set of data. It is proved to be solid to do this trade, since in this project, the visually inspected results shows that the waiting time is still inside human tolerable margins.
 
-The dataset we chose is the Mandelbrot set. The Mandelbrot set is a famous example of a fractal in mathematics. It is named after Beno\^{\i}t Mandelbrot, a Polish-French-American mathematician\footnote{ Its definition and name are due to Adrien Douady, in tribute to the mathematician Beno\^{\i}t Mandelbrot\cite{wiki:mandel}.}. The reason this thesis is using Mandelbrot set as the source of extreme resolution dataset is because Mandelbrot set can provide theoretically infitely high resolution datasets. In this section, we'll introduce briefly Mandelbrot set, its algorithms ideas for visualization.
+The dataset we chose is the Mandelbrot set. The Mandelbrot set is a famous example of a fractal in mathematics. It is named after Beno\^{\i}t Mandelbrot, a Polish-French-American mathematician\footnote{ Its definition and name are due to Adrien Douady, in tribute to the mathematician Beno\^{\i}t Mandelbrot\cite{wiki:mandel}.}. The reason this thesis is using Mandelbrot set as the source of extreme resolution dataset is because Mandelbrot set can provide theoretically infinitely high resolution datasets. In this section, we'll introduce briefly Mandelbrot set, its algorithms ideas for visualization.
 
 \subsection*{What Is Mandelbrot Set}
 
-Firstly, we recursively define a sequence $\displaystyle (z_{n})_{n\in \mathbb {N} }$ as follows:
+Firstly, we recursively define a sequence $\displaystyle (z_{n})_{n\in\mathbb{N}},\thickspace z_{n}\in\mathbb{C}$ as follows:
 
 \begin{equation}
     z_0 = 0
 \end{equation}
 
 \begin{equation}
-    z_{n} = z_{n-1}^2 + c
+    z_{n} = z_{n-1}^2 + c,\thickspace c\in\mathbb{C}
 \end{equation}
 
 For different constant $c$, the absolute value of $z_n$ could remain bounded, could also be divergent, if $n$ is increased.
 
-The Mandelbrot set $M$ is the set of $c$ in the complex plane for which the sequence $\displaystyle (z_{n})_{n\in \mathbb {N} }$ remains bounded.
+The Mandelbrot set $\mathbb{M}$ is the set of $c$ in the complex plane for which the sequence $\displaystyle (z_{n})_{n\in\mathbb{N}},\thickspace z_{n}\in\mathbb{C}$ remains bounded.
 
 \subsection*{Important Properties of the Mandelbrot Set}
 
 A property of Mandelbrot set is as follows:
 
-A complex number $c$ belongs to the Mandelbrot set $M$, if and only if the absolute value of $z_n$ is not larger than $2$, for all $n = 0, 1, 2, ..$
+A complex number $c$ belongs to the Mandelbrot set $\mathbb{M}$, if and only if the absolute value of $z_n$ is not larger than $2$, for all $n = 0, 1, 2, ..$
 
 \subsection*{Simple Graphical Presentation}
 
-The following figure \gmref{fig:mandelbrot} is a simple graphical representation of Mandelbrot set. A point $c$ in the complex plane is conventionally colored \emph{black} if it belongs to the Mandelbrot set $M$, and \emph{white} if not. 
+The following figure \gmref{fig:mandelbrot} is a simple graphical representation of Mandelbrot set. A point $c$ in the complex plane is conventionally colored \emph{black} if it belongs to the Mandelbrot set $\mathbb{M}$, and \emph{white} if not. 
 
 \begin{figure}[th]
 \centering
@@ -178,56 +178,54 @@ The following figure \gmref{fig:mandelbrot} is a simple graphical representation
 
 \subsection*{Algorithms for Visualization}\label{chap2:algorithmsforvisualization}
 
-For each $c$ in complex plane, the following is done in an outer loop:
+A simple algorithm is introduced for visualization of black and white in \gmref{alg:simple}.
 
-\{
+\begin{algorithm}[H]
+    \ForEach{$c$ in complex plane}{
+        $z_0 = 0$\;
+        \For{$n \leftarrow 0$ \KwTo $max$}{
+            $z_n = z_{n - 1}^2 + c$\;
+            \If{the value of $z_n$ is larger than $2$}{
+                $c$ does not belong to $\mathbb{M}$. In this case, we set the color of $c$ to \emph{white} and the calculation of sequence is stopped\;
+            }
+            \uElseIf{$n = max$}{
+                $c$ belongs to $\mathbb{M}$ and we set the color of $c$ to \emph{black}\;
+            }
+        }
+    }
+    \caption{Algorithms for Simple Visualization}
+    \label{alg:simple}
+\end{algorithm}
 
-~~~~For current $c$, we calculate in an internal loop sequence $z_n, n = 0, 1, .., max$:
+In \gmref{alg:simple}, the variable $max$ can be treated as a constant for each complete cycle of the execution of the algorithm. The larger $max$ is, the more accurate the image generated will be. However, it should not be set infinitely large as a point belonging to the Mandelbrot set will cause the algorithm to loop infinitely. A simple equation is used for the determination of this value $max$:
 
-~~~~\{
+\begin{equation}
+    \label{eq:max}
+    {(50 \cdot log_{\thinspace 10 \thinspace}{magnif})}^{1.08}
+\end{equation}
 
-~~~~~~~~$z_0 = 0$, (initial value),
-
-~~~~~~~~$z_{n+1} = z_n^2 + c$
-
-~~~~~~~~If the value of $z_{n+1}$ is larger than $2$, then:
-
-~~~~~~~~~~~~\begin{minipage}[t]{0.9\textwidth} $c$ does not belong to $M$. In this case, we set the color of $c$ to \emph{white} and the calculation of sequence is stopped. \end{minipage}
-
-~~~~~~~~If $n = max$, then:
-
-~~~~~~~~~~~~$c$ belongs to $M$ and we set the color of $c$ to \emph{black}.
-
-~~~~\}
-
-\}
+Where $magnif$ is the magnification level, a number representing the number of pixels that together has a length of $1$ on the mathmatical axis, shown in \gmref{fig:magnif}.
 
 \subsection*{Algorithms Idea for Graphical Representation with Grayscale}
 
-In the above algorithm in \ref{chap2:algorithmsforvisualization} \nameref{chap2:algorithmsforvisualization}, $c$ is set to either \emph{black} or \emph{white}. If the iteration number $n$ is equal to the maximum iteration number $max$ and the value of $z_n$ still less than $2$, then $c$ has the color \emph{black}. If the iteration number $n$ is smaller than $max$ then at this moment the absolute value of $z_n$ becomes larger than $2$. In this case, we cannot set the color of $c$ to \emph{black}, because $c$ dose not belong to Mandelbrot set. However, we set a color with a portion of \emph{black}, to indicate how close $c$ is to be in \emph{black} area.
+In the above algorithm in \gmref{chap2:algorithmsforvisualization}, $c$ is set to either \emph{black} or \emph{white}. If the iteration number $n$ is equal to the maximum iteration number $max$ and the value of $z_n$ still less than $2$, then $c$ has the color \emph{black}. If the iteration number $n$ is smaller than $max$ then at this moment the absolute value of $z_n$ becomes larger than $2$. In this case, we cannot set the color of $c$ to \emph{black}, because $c$ dose not belong to Mandelbrot set. However, we set a color with a portion of \emph{black}, to indicate how close $c$ is to be in \emph{black} area, as shown in \gmref{alg:grayscale}.
 
-For each $c$ in complex plane, the following is done in an outer loop:
+\begin{algorithm}[H]
+    \ForEach{$c$ in complex plane}{
+        $z_0 = 0$\;
+        \For{$n \leftarrow 0$ \KwTo $max$}{
+            $z_n = z_{n - 1}^2 + c$\;
+            \If{the value of $z_n$ is larger than $2$}{
+                $c$ does not belong to $\mathbb{M}$\;
+                In this case, we set the color of $c$ to \st{\emph{white}} \emph{grayscale\footnote{ In the current implementation, this color is set to be grayscaled red, rgb($grayscale\% \times 255$, 0, 0).} depending on the number of iteration} $n$ and the calculation of sequence is stopped\;
+            }
+            \uElseIf{$n = max$}{
+                $c$ belongs to $\mathbb{M}$ and we set the color of $c$ to \emph{black}\;
+            }
+        }
+    }
+    \caption{Algorithms for Grayscale Visualization}
+    \label{alg:grayscale}
+\end{algorithm}
 
-\{
-
-~~~~For current $c$, we calculate in an internal loop sequence $z_n, n = 0, 1, .., max$:
-
-~~~~\{
-
-~~~~~~~~$z_0 = 0$, (initial value),
-
-~~~~~~~~$z_{n+1} = z_n^2 + c$
-
-~~~~~~~~If the value of $z_{n+1}$ is larger than $2$, then:
-
-\begingroup
-    \leftskip=3em $c$ does not belong to $M$. In this case, we set the color of $c$ to \st{\emph{white}} \emph{grayscale\footnote{ In the current implementation, this color is set to be grayscaled red, rgb($grayscale\% \times 255$, 0, 0).} depending on the number of iteration} $n$ and the calculation of sequence is stopped.\par
-\endgroup
-
-~~~~~~~~If $n = max$, then:
-
-~~~~~~~~~~~~$c$ belongs to $M$ and we set the color of $c$ to \emph{black}.
-
-~~~~\}
-
-\}
+The value $max$ is determined in the same way as described in \gmref{eq:max}.

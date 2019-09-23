@@ -222,7 +222,7 @@ There in total four classes defined.
 
 \subsubsection{Class \texttt{MandelWorker}}
 
-The class \texttt{MandelWorker} is in charge of sending a message to the back end and when a result is sent back, doing some other actions.
+The class \texttt{MandelWorker} is in charge of sending a message to the back end and when a result is sent back, handle it by executing a preset function(or say callback). This class is the red and green arrows shown in \gmref{fig:fpcpair}.
 
 When instantiated, an instance of a native \emph{Web Worker} will also be created as a private property of this class. \texttt{MandelWorker} instantiates the \emph{Web Worker} by the script \texttt{naive\-worker.js}, which means that the script \texttt{naive\-worker.js} will be the core of the worker and this worker will be doing whatever in that script when it is asked to\footnote{ See \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers\#Spawning_a_dedicated_worker} for more detailed information of the process of instantiating a \emph{Web Worker}.}.
 
@@ -262,7 +262,7 @@ The function \texttt{destroy()} as the name implies is the method to destroy and
 
 \subsubsection{Class \texttt{MapVisualPair}}
 
-An abstract concept of pairing a minimap\footnote{ Same concept in current project as an \emph{overview}. } with an active focus region with higher resolution, as \gmref{fig:mapvisualpair} is an example of what they actually are respectively.
+An abstract concept of pairing a minimap\footnote{ Same concept in current project as an \emph{overview}. } with an active focus region with higher resolution, as \gmref{fig:mapvisualpair} is an example of what they actually are respectively. This class is realizing the model of a pair of \gls{fpc} shown in \gmref{fig:fpcpair}.
 
 \begin{figure}[th]
 \centering
@@ -295,7 +295,7 @@ The canvas \texttt{mapCanvas} will be used to draw the shrunk version of the \gl
 
 After bounding the canvases, this function will also check if any event handlers are bound to the events \texttt{mouseover} and \texttt{mouseout} to the \texttt{mapCanvas} element, and record corresponding info to the element to avoid attemps to rebound event handlers to the same \texttt{<canvas>} element. In this way, only one event handler for \texttt{mouseover} and \texttt{mouseout} will be triggered when the user hovers their mouse on the \texttt{<canvas>} and when the user put their cursor out of the element.
 
-The handlers this function is going to bound to the \texttt{mapCanvas} element are going to first add \gls{css} class \texttt{.nearby} to adjacent siblings of this canvas, and check if any additional callbacks this class should call. The callbacks, if any, which are set in the private properties \texttt{mouseOverCallback} and \texttt{mouseOutCallback}, will be called under set context \texttt{mouseOverCallbackThis} and \texttt{mouseOutCallbackThis} when user performs corresponding actions. As mentioned before, they will also be called only once because the bounding information is recorded. In the project, these callbacks and the contexts of them are set by a manager class \ref{chap4:effectmanager} \nameref{chap4:effectmanager}.
+The handlers this function is going to bound to the \texttt{mapCanvas} element are going to first add \gls{css} class \texttt{.nearby} to adjacent siblings of this canvas, and check if any additional callbacks this class should call. The callbacks, if any, which are set in the private properties \texttt{mouseOverCallback} and \texttt{mouseOutCallback}, will be called under set context \texttt{mouseOverCallbackThis} and \texttt{mouseOutCallbackThis} when user performs corresponding actions. As mentioned before, they will also be called only once because the bounding information is recorded. In the project, these callbacks and the contexts of them are set by a manager class \gmref{chap4:effectmanager}.
 
 \textbf{Function} \verb|destroy()|
 
@@ -331,7 +331,7 @@ The width and height in \textbf{pixels} of the image data of the whole visual ar
 
 \textbf{Properties} \texttt{visImgOffsetX} and \texttt{visImgOffsetY}
 
-These two properties are set for the dragging actions that are realized in \ref{chap4:minimapmanager} \nameref{chap4:minimapmanager}. They represents the current dragging offset with respect to the top left corner of the \texttt{visCanvas}. The reference point being top left corner not the center point is because in web canvas drawing system, the (0, 0) point is the top left corner, unlike in mathmatical complex plane it being the center.
+These two properties are set for the dragging actions that are realized in \gmref{chap4:minimapmanager}. They represents the current dragging offset with respect to the top left corner of the \texttt{visCanvas}. The reference point being top left corner not the center point is because in web canvas drawing system, the (0, 0) point is the top left corner, unlike in mathmatical complex plane it being the center.
 
 \textbf{Properties} \texttt{mapCenterX} and \texttt{mapCenterY}
 
@@ -339,36 +339,101 @@ Like the properties \texttt{visCenterX} and \texttt{visCenterY}, these two prope
 
 \subsubsection{Class \texttt{MinimapManager}}\label{chap4:minimapmanager}
 
-The manager class of all the minimaps, controlling all their behaviours on the top level.
+The manager class of all the minimaps, controlling all their behaviours on the top level. This class is described in \gmref{fig:fpcmanager}, the manager of all the \gls{fpc} models, plus a \gls{fhd} visual area.
 
 \textbf{Inits}
 
-\path{initMaps(visCanvas, previewCanvas, mapsContainer, visualContainer, hoverX = 0, hoverY = 0)}
+\textbf{Function} \path{initMaps(visCanvas, previewCanvas, mapsContainer, visualContain er, hoverX = 0, hoverY = 0)}
 
-\path{initPairMainDrag()}
+This function initializes the states of all the \texttt{MapVisualPair}s that should be displayed, as well as initializing its own requird properties.
 
+The properties \texttt{visCanvas} and \texttt{previewCanvas} are the canvases bound to this manager. \texttt{visCanvas} is the canvas for the main visual area and the details image is rendered on this canvas. \texttt{previewCanvas} is the canvas that's initially hidden, but will be shown when the \texttt{EffectManager} described in \gmref{chap4:effectmanager} instructs, designed for the presentation of the preview images. These two canvases have exactly the same dimensions, covering the entire \gls{ui} viewport, and on the most bottom layer of the page hence being laid over by the \glspl{map} and control panels. \texttt{previewCanvas} in turn lays over \texttt{visCanvas} since when a preview instruction is issued, it has to be displayed over the original visual area.
 
-\textbf{Mouse Down(drag to browse around)}
+The property \texttt{mapsContainer} is the container holding all the canvases for the display of \glspl{map}. It's bound to this manager during this initialization phase. During this phase, step one, basic \gls{dom} structure of one \gls{map}, consisting of one \texttt{<cavans>} element and one \texttt{<span>} element for the purpose of showing the \texttt{magnif} number, will be created and appended to this container. The center coordinates of the \gls{map} will be from the parameters \texttt{hoverX} and \texttt{hoverY}, and \texttt{0} if not designated. The \texttt{magnif} level of the first \gls{map} comes from the variable \texttt{mapMagnif} in the global scope of \texttt{index.js}\footnote{ Technically not the global scope of entire \texttt{index.js} file per se, but the ``global scope'' of entire anonymous function that envelops all the codes.}. Based on the \texttt{magnif} of the first \gls{map} and the \texttt{visMagnif} variable defined in global scope, the initial dimensions of the focus area projected on the \gls{map} can be calculated.
 
-\path{pairMainMouseDown(e)}
+With the dimensions of the first \gls{map}, this manager then decides whether additional \glspl{map} are required, based on the results of whether this projected area on \gls{map} is too small. If this area is too small, additional \gls{dom} structure consisting of one \texttt{<canvas>} and one \texttt{<span>} will be created and appended to the container. The criteria of whether this area is too small is defined by the private property \texttt{this.minStrokeW}\footnote{ In pixels.} of this manager. After the new \gls{dom} is created, we then will have two canvases. The first one will be the \gls{map} canvas and the one created after the calculation of the projection area will be the ``visual'' area. These two areas will then be paired up, forming an object of \texttt{MapVisualPair}. The \texttt{magnif} value of the visual area will be determined by the \texttt{magnif} value of the \gls{map} area, the minimal dimensions allowed for the projection area preset in \texttt{this.minStrokeW} and the dimensions of the dimensions of \texttt{previewCanvas}.
 
-\path{pairMainMouseMove(e)}
+Since the model of \gls{fpc} are hierarchical, we can easily see that the new \texttt{magnif} value of the next \gls{map} area will be the value of the \texttt{magnif} value of the previous visual area. After the pairing of these two \glspl{map} and forming a first \texttt{MapVisualPair}, we can repeat this process described in above paragraph until the projection area on the current \gls{map} area is big enough then set in \texttt{this.minStrokeW}. When this happens, we bind the most recent \gls{map} canvas with the main visual area canvas and form the final \texttt{MapVisualPair}. This pair is named \texttt{this.pairMain} in this manager.
 
-\path{pairMainMouseUp(e)}
+And the end of the initialization process, we put all these generated \texttt{MapVisualPair}s in an array called \texttt{this.pairs} and also bind \texttt{visualContainer} which holds \texttt{visCanvas} and \texttt{previewCanvas} with this manager. Later this container will be used for the events binding of \gls{ui} interactions.
 
-\path{pairMainStepDrag(timestamp)}
+\textbf{Function} \verb|initPairMainDrag()|
 
+This function is called after the process in \texttt{initMaps(params..)} is complete. It registers necessary event handlers for mouse dragging related events that allows for browsing around the center of the focus view like Google Maps, including:
 
-\textbf{Mouse Wheel(zoom in and out)}
+\begin{itemize}
+  \item \path{pairMainMouseDown(e)} is bound with what was set in \texttt{visContainer} property, responding to single mouse pressing event without releasing the button.
+  \item \path{pairMainMouseMove(e)} is bound with what was set in \texttt{visContainer} property, responding to single mouse moving event without releasing the button.
+  \item \path{pairMainMouseUp(e)} is bound with what was set in properties \texttt{visContainer} \textbf{or} anywhere on the web page, responding to single mouse button releasing event.
+\end{itemize}
 
-\path{initPairMainWheel()}
+All the handlers are bound under the context of the current class, a.k.a \texttt{this} or \texttt{MinimapManager}.
 
-\path{pairMainWheel(e)}
+\textbf{Function} \verb|initPairMainWheel()|
 
-\path{pairMainTimeoutWheel()}
+This function can be called after the process in \texttt{initMaps(params..)} is complete. In the project it is called after \texttt{initPairMainDrag()}. It registers necessary event handlers for mouse wheeling related events that allows zooming into the dataset on the fly like Google Maps. It binds the event handler \texttt{pairMainWheel(e)} to the mouse wheel event with the root document of the web page, which means when user tries to scroll the middle button of thier mouse, this handler will be triggered.
 
-\path{pairMainStepWheel()}
+This handler is also bound under the context of the current class, a.k.a \texttt{this} or \texttt{MinimapManager}.
 
+\textbf{Handlers and Functions Related with Mouse Dragging}
+
+\textbf{Function} \path{pairMainMouseDown(e)}
+
+As mentioned before, this function handles the event when user presses the left mouse button before releasing it.
+
+When this event happens on the target, we first records the current position of the user's cursor on the attributes \texttt{dragStartX}, \texttt{dragStartY}, \texttt{dragCurrentMouseX} and \texttt{dragCurrentMouseY}, and use \texttt{window.requestAnimationFrame(callback)} to activate an animation with max frame rates allowed. The \texttt{callback} parameter in \path{window.requestAnimationFrame(callback)} is the method \texttt{pairMainStepDrag(timestamp)} of this manager and will be called every time when a new frame should be rendered to the screen and we use this mechanism to repaint the dragged image of the current focus area in the correct place.
+
+This function also sets a \texttt{dragGlobalID} property to the class to mark that this process has been marked started.
+
+\textbf{Function} \path{pairMainMouseMove(e)}
+
+This function handles the situation when the user, while not releasing the left mouse button, moves the mouse around.
+
+This function does one simple thing: if the \texttt{dragGlobalID} attribute is set on the class meaning the process of mouse dragging being started, set the current postion of user's cursor to the attributes \texttt{dragCurrentMouseX} and \texttt{dragCurrentMouseY} to be used by \texttt{pairMainStepDrag(timestamp)}.
+
+\textbf{Function} \path{pairMainStepDrag(timestamp)}
+
+During the phase of dragging, since this function is triggered every time a new frame is needed to be rendered, we simply grab the values in \texttt{dragCurrentMouseX} and \texttt{dragCurrentMouseY}, and compare them with \texttt{dragStartX} and \texttt{dragStartY}, and see how much the user has moved their mouse since the last frame rendered.
+
+We then paint the image based on the offsets we calculated from these two pairs of values on the correct position.
+
+\textbf{Function} \path{pairMainMouseUp(e)}
+
+When user releases the mouse button after the series of the previous events, this handler gets triggered.
+
+We repaint the image of the focus area one last time on the correct place, and put this final offset on the properties \texttt{visImgOffsetX} and \texttt{visImgOffsetY} of \texttt{this.pairMain}, and stop the animation using \texttt{window.cancelAnimationFrame(this.dragGlobalID)} with the help of the recorded \texttt{dragGlobalID}.
+
+At this point, new coordinates of the current center of visual view will be calculated and check how many of the \texttt{MapVisualPair}s need updates. All of those that need updates will be instructed to send requests to back end resolver and fetch new image data.
+
+The properties \texttt{visImgOffsetX} and \texttt{visImgOffsetY} are set on \texttt{this.pairMain} so next time when user starts to drag the mouse, the image of the visual area will start from the current offset and not jump back to the initial offset of this drag which is \texttt{(0, 0)}, even if the calculation from the resolver hasn't completed yet. This mechanism can be compared with this situation of Google Maps: when user is looking at location $A$ and the loading is completed, and drags the map around and stops at another location $B$, the map will start to fetch the data around location $B$. However, if the user refuses to wait and starts to drag again to a new location $C$, the second drag starts from location $B$ and not location $A$.
+
+\textbf{Handlers and Functions Related with Zooming In and Out}
+
+\textbf{Function} \path{pairMainWheel(e)}
+
+This function handles the event when user scrolls the middle button of their mouse.
+
+In this handler, we first check if this process is already ongoing or not.
+
+If this process hasn't been started yet, we set a property \texttt{wheelCurrentRatio} representing how much user has zoomed in to \texttt{1}, and records the current \texttt{magnif} value of the visual area, \texttt{visMagnif}. We then request a same rendering mechanism trigger by \texttt{window.requestAnimationFrame} and pass on the frame executor \path{pairMainStepWheel (timestamp)} to start an animation for zooming in. After that, while the zooming animation of the current visual area image is ongoing, we set a timer of $500$ milliseconds that detects if the scrolling on the mouse button is still happening. When the timer hits, meaning within $500$ milliseconds the user hasn't scrolled the mouse button, we should consider that user wants to stop the zooming at current depth.
+
+If this process is started already, meaning this process is still ongoing, we only refresh the counter of the timer, and reset it back to $500$ milliseconds and let the \texttt{pairMainStepWheel(timestamp)} to keep working on each frames of the animation.
+
+\textbf{Function} \path{pairMainStepWheel()}
+
+During the phase of zooming in or out of the dataset, this function is triggered every time a new frame is needed to be rendered. We check if the zooming direction is in or out, then repaint the zoomed image and calculate the new \texttt{visMagnif}\footnote{ As mentioned before, the \texttt{magnif} value of the main visual area.}.
+
+\textbf{Function} \path{pairMainTimeoutWheel()}
+
+If this function gets triggered, it means the timer has timed out and user wants to stop at current depth. Since each frame we have the value of \texttt{visMagnif} calculated, we now have a new \texttt{magnif} value for the visual area in the system. 
+
+To make the current system has the clear resolution again, two situation can happen: user has either zoomed deeper into the dataset, or has zoomed out shallower.
+
+When the first situation is the case, we start from the most zoomed in \gls{map}, and check whether with its \texttt{magnif} value new \glspl{map} are needed. This process is the same as described in \texttt{initMaps(params...)} since we're here also initializing new \glspl{map}, adding more to the pile of \texttt{this.pairs}.
+
+When the second situation is the case, we do the reverse way of the initializing process. If the current projection area is larger than the most zoomed in \gls{map} entirely, this \gls{map} is no longer needed and needs to be removed. We delete this \gls{map}, invoking all the \texttt{destroy()} methods on \texttt{MapVisualPair} and their \texttt{MandelWorker}s, and move one level upper. We stop at the level where the projection area is small enough within one \gls{map}, and reconnect the current most zoomed in map with the canvas of the main visual area.
+
+After the increment or decrement of the \glspl{map}, \texttt{MapVisualPair} that needs to get updates will be instructed to send requests to resolvers.
 
 \subsubsection{Class \texttt{EffectManager}}\label{chap4:effectmanager}
 
