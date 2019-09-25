@@ -4,9 +4,9 @@
 
 \label{Chapter2} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-In this chapter, we'll introduce some necessary background knowledge in order to let the user understand better how this project came into its form.
+In this chapter, we will introduce some necessary background knowledge in order to let the reader understand better how this project came into its form.
 
-Not only the technology stack that this project is using is important to further understanding of this project, but also some theoretical part that's behind them. We'll be introducing them gradually.
+Not only the technology stack that this project used is important to further understanding, but also some theoretical part that's behind. We shall introduce it gradually.
 
 %----------------------------------------------------------------------------------------
 %	SECTION
@@ -105,7 +105,7 @@ Solving exactly the problems of our focus points in this thesis. Some more speci
 
 In the graphics part, the new element \texttt{<canvas>} element that allows delicate drawing on web pages are heavily used. 
 
-In the performance and integration part, \emph{Web Worker}s are used allowing delegation of \gls{js} evaluation to background threads, and allowing these activities to prevent slowing down interactive events. The separation used in the project can also be easily advanced by replacing this multithreading calculation part with the new \emph{XMLHttpRequest} allowing fetching information asynchronously, also allowing it to display dynamic content, varying according to the time and user actions\footnote{ This is the technology behind \emph{Ajax}. To know more information about \emph{Ajax}, see \url{https://en.wikipedia.org/wiki/Ajax_(programming)}.}. 
+In the performance and integration part, \emph{Web Worker}s are used allowing delegation of \gls{js} evaluation to background threads, preventing these operations from slowing down \gls{ui} interactive events. The separation used in the project can also be easily advanced by replacing this multithreading calculation part with the new \emph{XMLHttpRequest} allowing fetching information asynchronously, also allowing it to display dynamic content, varying according to the time and user actions\footnote{ This is the technology behind \emph{Ajax}. To know more information about \emph{Ajax}, see \url{https://en.wikipedia.org/wiki/Ajax_(programming)}.}. 
 
 In the styling part, since the new \gls{css} in \gls{h5}, \gls{css3}, has been extended to be able to style elements in a much more complex way, many new features of \gls{css3} are used, such as:
 
@@ -127,7 +127,7 @@ Two new layouts have been added to \gls{css3}: the \gls{css} multi-column layout
 
 \texttt{<canvas>} is an \gls{html} element which can be used to render graphics via scripts\footnote{ To know about the \texttt{<canvas>} element, see \url{https://en.wikipedia.org/wiki/Canvas_element}.}, here in our project \gls{js}. It can, for instance, be used to draw graphs or create simple (and not so simple) animations. In our project, \texttt{<canvas>} is used for the graphical representation of the extreme resolution datasets.
 
-It's also worth mentioning that after first introduced in \emph{WebKit} by \emph{Apple} for the \emph{OS X Dashboard}, \texttt{<canvas>} has since been implemented and supported in all major browsers and today.
+It's also worth mentioning that after first introduced in \emph{WebKit} by \emph{Apple} for the \emph{OS X Dashboard}, \texttt{<canvas>} has since been implemented and supported in all major browsers today.
 
 The Canvas \gls{api} itself is a sense of how to use scripts to draw on this newly introduced \gls{html} element. It is largely focuses on 2D graphics. The reason to bring it up here together with the \texttt{<canvas>} element is that there are many other \gls{api}s that come together with it, for example the WebGL \gls{api}, which also uses the \texttt{<canvas>} element, draws hardware-accelerated 2D and 3D graphics. In another word, the context of the \texttt{<canvas>} element\footnote{ Here not the same concept as the ``context'' in the previously mentioned term \gls{fpc}.} is ``2d'' through the Canvas \gls{api}, not ``webgl'' context or any other.
 
@@ -208,7 +208,7 @@ Where $magnif$ is the magnification level, a number representing the number of p
 
 \subsection*{Algorithms Idea for Graphical Representation with Grayscale}
 
-In the above algorithm in \gmref{chap2:algorithmsforvisualization}, $c$ is set to either \emph{black} or \emph{white}. If the iteration number $n$ is equal to the maximum iteration number $max$ and the value of $z_n$ still less than $2$, then $c$ has the color \emph{black}. If the iteration number $n$ is smaller than $max$ then at this moment the absolute value of $z_n$ becomes larger than $2$. In this case, we cannot set the color of $c$ to \emph{black}, because $c$ dose not belong to Mandelbrot set. However, we set a color with a portion of \emph{black}, to indicate how close $c$ is to be in \emph{black} area, as shown in \gmref{alg:grayscale}.
+In the mentioned algorithm \gmref{alg:simple}, $c$ is set to either \emph{black} or \emph{white}. If the iteration number $n$ is equal to the maximum iteration number $max$ and the value of $z_n$ still less than $2$, then $c$ has the color \emph{black}. If the iteration number $n$ is smaller than $max$ then at this moment the absolute value of $z_n$ becomes larger than $2$. In this case, we cannot set the color of $c$ to \emph{black}, because $c$ dose not belong to Mandelbrot set. However, we set a color with a portion of \emph{black}, to indicate how close $c$ is to be in \emph{black} area, as shown in \gmref{alg:grayscale}.
 
 \begin{algorithm}[H]
     \ForEach{$c$ in complex plane}{

@@ -93,15 +93,15 @@ A description file of the \gls{js} package management tool \emph{npm}. This file
 A generated file from \emph{npm} package manager which locks the version of the dependencies of this specific workspace. Take the current project as an example, in file \texttt{package.json} there is this part in the \gls{json} body:
 
 \begin{verbatim}
-{
-  ..
-  "dependencies": {
+  {
     ..
-    "minibarjs": "^0.4.0",
+    "dependencies": {
+      ..
+      "minibarjs": "^0.4.0",
+      ..
+    },
     ..
-  },
-  ..
-}
+  }
 \end{verbatim}
 
 This piece of code only specified that the version of the package \texttt{minibarjs} that we require will match all \texttt{0.x.x} releases including \texttt{0.5.x}, but will hold off on \texttt{1.x.x}. This file \texttt{package-lock.json} will ``lock'' the version inside current workspace to a specific version with a hashed fingerprint of the files, in the current project with a version number of \texttt{0.4.0} and a hash fingerprint \path{sha512-iCUE/YVWn+0ht+NV2fLBS8bAVxED/9l6A5i1qJ20csCrc0tXHamgpWCo7uL+23HQ0UyFPvpw1izw2l3vzVKkXg==}.
@@ -192,9 +192,9 @@ The entry of the project is where this program gets started, in similar concept 
 First part of the \gls{html} file is the \texttt{<head>} part. In this part, the character set of this web page is defined as \emph{UTF-8}, the size of the entire \gls{html} document as fullscreen size, scaling not allowed and not shrinking to display its content.
 
 \begin{verbatim}
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,
-    initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,
+      initial-scale=1, shrink-to-fit=no">
 \end{verbatim}
 
 And then all the needed \gls{css} files are included to end the \texttt{<head>} part. Besides the \gls{css} files which will be described in \gmref{chap4:frontend-css}, the necessary \gls{css} files from third-party open source vendors are also included, including \emph{Bootstrap}'s \gls{css} part, \emph{FontAwesome} and \emph{MiniBar} \gls{css} assets.
@@ -439,39 +439,185 @@ After the increment or decrement of the \glspl{map}, \texttt{MapVisualPair} that
 
 This class manages the behaviours, activation and deactivation of the overview effects and the preview effects of the overviews.
 
-General functions: \texttt{init()}, \texttt{getInfo(el)}
+\textbf{General Functions}
 
-Fade in / out related functions: \texttt{fadeMouseOver(e, currentPair)}, \texttt{fadeMouseOut(e, currentPair)}
+\textbf{Function} \path{init()}
 
-Zoom in / out through related functions: \texttt{zoomMouseOver(e, currentPair)}, \texttt{zoomStep(timestamp)}, \texttt{zoomMouseOut(e, currentPair)}
+This function handles the initialization of the \texttt{EffectManager}. It does the following things in an order:
 
-General preview effects functions: \texttt{updatePreview()}, \texttt{updateFadePreview()}, \texttt{updateZoomPreview()}, \texttt{destroyPreview()}
+\begin{itemize}
+  \item Set a flag of \texttt{this.controlsInit} to \texttt{true} so this \texttt{EffectManager} won't get initialized twice.
+  \item Apply the \emph{tooltip} effects of \emph{Bootstrap} on all the elements that should have tooltips.
+  \item Initialize all functionalities of the controls on the general page of control panel, binding event handlers so the buttons / text fields can respond to user inputs.
+  \item Initialize all controls on the page effects, algorithms and info.
+  \item Bind key press event of \texttt{a}, \texttt{d}, \texttt{left arrow} and \texttt{right arrow} keys to trigger the mouse hovering event on context views.
+\end{itemize}
 
-General overview effects functions: \texttt{destroy()}, \texttt{update()}
+To be more specific, during the initialization phase of general page, when user changes the value of the text field \emph{Control Panel Width}, the event handler simply applies a css \texttt{width} attribute with the designated value. When user changes the value of the dimensions of the overview or the visual area, the event handler simply sets the global variables to corresponding values and reinitialize all the managers and \texttt{MapVisualPair}s.
 
-Scrollbar + Dock effects specific functions: \texttt{initScrollbar()}, \texttt{destroyScrollbar()}, \texttt{updateScrollbar()}
+During the initialization phase of effects page, the function remembers the text of when no effects are activated and then apply corresponding actions when a certain item in the dropdown menus are clicked. The activation of each effect destroys all other effects and activate only that specific effect, while the \emph{Clear Effects} button simply destroys all the effects. The initialization and destruction are implemented in other functions of this manager class. For instance the process is as follows:
 
-Stacked Cards effects specific functions: \texttt{initStacked()}, \texttt{destroyStacked()}, \texttt{updateStacked()}
+The essential code for the activation of the \emph{Scrollbar + Dock} effect:
 
-Tabs effects specific functions: \texttt{initTabs()}, \texttt{destroyTabs()}, \texttt{updateTabs()}
+\begin{verbatim}
+  // The button for Scrollbar + Dock activation
+  $(`#scrollbarActivator').click((e) => {
+    $(`#effectsDropdownBtn').html($(`#scrollbarActivator').html());
+
+    // this.destroyScrollbar();
+    this.destroyStacked();
+    this.destroyTabs();
+
+    this.initScrollbar();
+  });
+\end{verbatim}
+
+The essential code for the activation of the \emph{Stacked Cards} effect:
+
+\begin{verbatim}
+  // The button for Stacked Cards activation
+  $(`#stackedActivator').click((e) => {
+      $(`#effectsDropdownBtn').html($(`#stackedActivator').html());
+
+      this.destroyScrollbar();
+      // this.destroyStacked();
+      this.destroyTabs();
+
+      this.initStacked();
+  });
+\end{verbatim}
+
+The essential code for the activation of the \emph{Tabs} effect:
+
+\begin{verbatim}
+  // The button for Tabs activation
+  $(`#tabsActivator').click((e) => {
+      $(`#effectsDropdownBtn').html($(`#tabsActivator').html());
+
+      this.destroyScrollbar();
+      this.destroyStacked();
+      // this.destroyTabs();
+
+      this.initTabs();
+  });
+\end{verbatim}
+
+The essential code for the destruction of all the effect:
+
+\begin{verbatim}
+  // The button for clear of effects
+  $(`#clearEffectsActivator').click((e) => {
+      $(`#effectsDropdownBtn').html(this.noEffectsText);
+
+      this.destroyScrollbar();
+      this.destroyStacked();
+      this.destroyTabs();
+  });
+\end{verbatim}
+
+Fairly straightforward pattern of the chains of invocation.
+
+The buttons for preview effects follow the same pattern, however, instead of invoking other functions in this manager class, they simply rebind all event handlers of mouse hovering event of context focus to new event handlers, respectively the \emph{Fade In / Out} button binds the fade related event handlers and the \emph{Zooming Through} button binds the zooming related handlers.
+
+\textbf{Function} \path{getInfo(el)}
+
+This function puts interested information of the running project in the element given by the parameter \texttt{el}. This function is invoked by the event handler of the \emph{Refresh} button on the \emph{Info} page of the control panel.
+
+\textbf{General Overview Effects Functions}
+
+The following functions are really simple, only working as a bridge between this manager and outside world invoker, including the \textbf{function} \texttt{destroy()} and \textbf{function} \texttt{update()}.
+
+Function \texttt{update()} should be invoked when the number of the overviews are having changes, such as increament on the amount of views or decrement on them. When \texttt{MinimapManager} are making changes to the number of overviews, calling this function can ensure that newly added overviews will be arranged properly according to current selected arrangement mode. 
+
+When \texttt{MinimapManager} are reducing the number of views presented, calling the function \texttt{destroy()} can ensure that no unnecessary memory leak will take place.
+
+\textbf{Scrollbar + Dock Effects Specific Functions}
+
+Function \texttt{initScrollbar()} handles the initialization process of the effect, function \texttt{destroyScrollbar()} handles the destruction and function \texttt{updateScrollbar()} handles the update event of the effect.
+
+For this effect, two major parts are invovled. One is the scrollbar part and the other is the Apple Dock part.
+
+The Apple Dock effects are realized through pure \gls{css} of \texttt{./css/dock.css} and will be described in \gmref{chap4:scrollbar}. During the process of \texttt{initScroll bar()}, for the purpose of applying Apple Dock effect only, only a \texttt{osx-dock} class will be applied to the containers of the overviews. During the destruction of this effect, the class \texttt{osx-dock} will be removed from the container, \texttt{\$(`\#maps-container')}.
+
+For the scrollbar effect, an instance of \emph{MiniBar} will be created on the same container. The stylings of the scrollbar is applied through pure \gls{css} as well in \texttt{./css/minibar.cs s}. An event handler that handles the changes in the element inside the container is also attached. That handler will scroll the container to the most bottom so the newly created overview will always be on the screen. During the destruction of the effect, the \texttt{destroy()} function of the \emph{MiniBar} instance will be invoked and reference will be removed to avoid memory leak.
+
+\textbf{Stacked Cards Effects Specific Functions}
+
+Function \texttt{initStacked()} handles the initialization process of the effect, function \texttt{destroyStacked()} handles the destruction and function \texttt{updateStacked()} handles the update event of the effect.
+
+For this effect, the process of initialization and update is almost the same. In fact, at the end of the initialization process, function \texttt{initStacked} invokes \texttt{updateStacked}.
+
+For the update process of this effect, first a delicate calculation is performed to determine whether the current screen can hold one column of overviews. If it can hold all the overviews inside one screen, no further actions will be performed. If not, a \texttt{stacked} class will be added to the \texttt{\$(`\#maps-container')} as well as 3d transformation \gls{css} attributes also being added to every single one of the overviews present. A tooltip will also be added to all the overviews popping out on the right side of each overview indicating the magnification level of each overview.
+
+For the destruction phase of this effect, all the process did in the update phase will be reversed and then arrangement of the overviews will return to its original state.
+
+It is also worth mentioning that the arrangement with equal margins and space between the overviews vertically, the \gls{css3} technique of flexbox\footnote{ For more information about flexbox in \gls{css3}, see \url{https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox}.} is used.
+
+\textbf{Tabs Effects Specific Functions}
+
+Function \texttt{initTabs()} handles the initialization process of the effect, function \texttt{destroy Tabs()} handles the destruction and function \texttt{updateTabs()} handles the update event of the effect.
+
+This effect is very similar to the \emph{Stacked Cards} effect, except for that it calculates the width of the container instead of height and applies horizontal distribution and sizes for all the overviews. A whole new different set of calcuation is performed since the control panel also occupies a portion of screen, however, the actions to be taken in \gls{js} file is in a similar structure with the ones in the \emph{Stacked Cards} effect.
+
+\textbf{General Preview Effects Functions}
+
+Following the patterns of \texttt{EffectManager}, several generic functions are included for the controls of the preview effects.
+
+Functions \texttt{updatePreview()} should be invoked when changes of numbers of overvie-ws are taken place. It will invoke corresponding secondary functions whether \texttt{update FadePreview()} or \texttt{updateZoomPreview()}, according to the current activated preview effects.
+
+Function \texttt{destroyPreview()} handles the the destruction of the preview effects. After invocation no preview effects will be animated.
+
+As for the updates of preview effects, for example \texttt{updateFadePreview()}, the mechanism is simply attach event handlers to all overviews currently present. The attached event handlers are corresponding event handlers for specific effects, for example \texttt{updateFade Preview()} will attach the event handler \path{fadeMouseOver(e, currentPa ir)} and \path{fadeMouseOut(e, currentPair)} to corresponding events.
+
+\textbf{Fade In / Out Event Handlers}
+
+The \emph{Fade In / Out} preview effect specific functions include two functions, the one handles the mouse over event \texttt{fadeMouseOver(e, currentPair)} and the one that handles the mouse leaving focus area event \texttt{fadeMouseOut(e, currentPair)}.
+
+When function \texttt{fadeMouseOver(e, currentPair)} is invoked with the event parameter \texttt{e}, it means the user tries to activate the preview of one context view. What this function does is to first check whether the preview canvas is visible or not. If it is visible, indicating that user was previewing another overview, it will stop the current animation of the preview canvas and then makes it fade in with correct image data after a small fading out animation of the previous image data. This function is like an ``entry'' of an overview.
+
+It the preview canvas is not visible at the beginning of the invocation of this function, then it simply just render correct image data on the preview canvas and makes it fade in so the user can see the image data.
+
+When function \texttt{fadeMouseOut(e, currentPair)} is invoked, it will simply fade out the preview canvas. It is like an ``exit'' of an overview.
+
+Note that all fading effects are performed on the transparancy of the mentioned elements.
+
+\textbf{Zooming Through Event Handlers}
+
+The \emph{Zooming Through} preview effect specific functions include three functions, other than the one handles the mouse over event \texttt{zoomMouse Over(e, currentPair)} and another one that handles the mouse leaving focus area event \texttt{zoomMouseOut(e, curr entPair)}, there is a third function \texttt{zoomStep(timestamp)}.
+
+First of all, the mechanism of the \emph{Zooming Through} preview effect is different from the preview effect \emph{Fade In / Out}.
+
+When the mouse over event gets triggered, meaning one overview with a certain index is requested. This index will be called destination depth. The function \texttt{zoomMouse Over(e, currentPair)} records that index, and kickstart the function \texttt{zoomStep(time stamp)} if it's not already started. The kickstarting mechanism is again the described \texttt{window.cancelAnimationFrame} mechanism that ensures high \gls{fps} performance.
+
+When the mouse leaving event(\texttt{zoomMouseOut(e, currentPair)}) gets triggered, the function will simply change the destination depth to a number that's $1$ larger than the amount of overviews present, indicating the destination depths is leaving the overviews, a.k.a destination depth being details view depth.
+
+The function \texttt{zoomStep(timestamp)} handles ``one step'' of the zooming process. If it gets triggered, it'll first check if the desired destination depth is reached or not. If it is reached, it stops the zooming animation with destination image data. If not, it enlarges the image data from current depth of the \gls{fpc} pair or shrinks it towards target depth until it reaches the destination.
+
+From the described content in this part, we can see that unlike the \emph{Fade In / Out} mechanism, the mouse over events and mouse out events are not like entries and exits of an overview, but navigation beacons. The mouse over event is to guide the preview canvas to stop at a certain depth of overviews, while the mouse out event is to guide it to stop at maximum depth of the entire system of the \gls{fpc}s.
 
 \subsubsection{Instantiation, Variables and the Rest}
 
+After defining several key classes, several ``global''\footnote{ Technically not the global scope of entire \texttt{index.js} file per se, but the ``global scope'' of entire anonymous function that envelops all the codes.} variables are defined.
+
+Most of the defined variables are referenced, used and modified across the life cycle of the project. They include the following:
+
 \begin{itemize}
-  \item \texttt{screenWidth}
-  \item \texttt{screenHeight}
-  \item \texttt{mapWidth}
-  \item \texttt{mapHeight}
-  \item \texttt{controlPanelWidth}
-  \item \texttt{visMagnif}
-  \item \texttt{mapMagnif}
-  \item \texttt{hoverX}
-  \item \texttt{hoverY}
-  \item \texttt{mainCanvas}
-  \item \texttt{previewCanvas}
-  \item \texttt{\$(`\#visual-container')}
-  \item \texttt{\$(`\#maps-container')}
+  \item \texttt{screenWidth} The screen width of the user screen monitor in pixels, pre-defined as a fixed value, should be changed when user puts a new value in the control panel.
+  \item \texttt{screenHeight} The screen height of the user screen monitor in pixels, similar to \texttt{screenWidth}.
+  \item \texttt{mapWidth} The width of the overviews in pixels, pre-defined and used across the project to generate new overviews.
+  \item \texttt{mapHeight} The height of the overviews in pixels, similar to \texttt{mapWidth}.
+  \item \texttt{controlPanelWidth} The width of the control panel in pixels, should be changed when user inputs a new value in \emph{General} tab in control panel.
+  \item \texttt{visMagnif} The starting magnification level of the visual area.
+  \item \texttt{mapMagnif} The magnification of the first overview view.
+  \item \texttt{hoverX} The x component of the starting center point that the user looks at in the dataset.
+  \item \texttt{hoverY} The y component of the starting center point.
+  \item \texttt{mainCanvas} A canvas that's dynamically created during the instantiation phase of the project and saved in this variable as a reference. It will be appended to the container \texttt{\$(`\#visual-container')}.
+  \item \texttt{previewCanvas} A canvas that's dynamically created after the creation of \texttt{main Canvas}, during the instantiation phase of the project, saved in this variable as a reference and overlays on the \texttt{mainCanvas}. It will be appended to the container \texttt{\$(`\#visual-container')} too.
+  \item \texttt{\$(`\#visual-container')} The container that contains \texttt{mainCanvas} and \texttt{preview Canvas}. For the \gls{dom} structure, see \gmref{fig:rootdom}.
+  \item \texttt{\$(`\#maps-container')} The container that contains all the context views. For the \gls{dom} structure, see \gmref{fig:rootdom}.
 \end{itemize}
+
+After the definition of variables and the creation of dynamic canvases, class \texttt{Minimap Manager} and class \texttt{EffectManager} are instantiated with the defined variables, created canvases and corresponding containers described above. The project should be running smoothly from this point on.
 
 \subsection{CSSs for Overview Effects}
 \label{chap4:frontend-css}
@@ -481,10 +627,125 @@ Folder \texttt{./css} includes five \gls{css} files, each setting up some visual
 File \texttt{./css/common.css} first sets up all general appearance of the elements on the web page when no parameters or effects are set. File \texttt{./css/dock.css} sets up the appearance when \emph{Scrollbar + Dock} is activated, only the iOS Dock part and file \\\texttt{./css/minibar.css} sets up the scroll bar part. File \texttt{./css/stacked.css} sets up the effects of stacked cards. File \texttt{./css/tabs.css} sets up the effects of the tab selection on the top.
 
 \subsection{Scrollbar + Dock Effect}
+\label{chap4:scrollbar}
+
+The realization of the effect consists of two parts, \gls{js} and \gls{css} part.
+
+The \gls{js} part is as mentioned before, include \texttt{initScrollbar()}, \texttt{destroyScrollbar()} and \texttt{updateScrollbar()} in class \texttt{EffectManager}.
+
+After the corresponding \gls{js} part finish its actions, \gls{css} codes will be put to actions once the \texttt{class} attribute is added to the container.
+
+In the file \texttt{./css/minibar.css}, styles are applied to \texttt{.mb-container} which is a class applied from within the dependency \emph{MiniBar} and to \texttt{.mb-bar} which is the bar itself. Styles add nice and modern looking coloring to the background of the slider, as well as a comfortable color on the bar --- all of them with good transparancy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.45\textwidth,keepaspectratio]{Figures/Chapter4/minibar.png}
+\decoRule
+\caption[Styles of Scrollbar]{An illustration of the appearance of the scrollbar.}
+\label{fig:minibar}
+\end{figure}
+
+The file \texttt{./css/dock.css} applies styles on the container \texttt{.osx-dock} which is a class that will only be added when Apple Dock effect are to be put on a certain container. It first specifies that all the transitions of the children nodes should be performed smoothly with a linear function, and specifically the effect of the halo effect should be animated a little bit slower. A simple demonstration is as follows:
+
+\begin{verbatim}
+  /* Webkit vendor properties before native properties */
+  -webkit-transition: all .15s linear, box-shadow .85s ease-out;
+
+  /* Native property of transition, all transitions in */
+  /* 0.15 seconds, halo effects, however within longer */
+  /* period of time, in 0.85 seconds                   */
+  transition: all .15s linear, box-shadow .85s ease-out;
+\end{verbatim}
+
+And then all the \texttt{<canvas>} elements in the container \texttt{.osx-dock} should be initially scaled down by 15\%, achieved through:
+
+\begin{verbatim}
+  -webkit-transform: scale(0.85);
+  transform: scale(0.85);
+\end{verbatim}
+
+Once an overview is focused, it should be enlarged the most with the largest margin between its adjacent siblings. The \gls{css} selector is \texttt{\#maps-container.osx-dock .li:hover} for the element itself and the \texttt{<canvas>} element \texttt{\#maps-container.osx-do ck .li:hover canvas}. The overview element should be put on top of everything so it will not be overlaid and put with correct margins. The \texttt{<canvas>} element will be put with a scale of $1.1$.
+
+The styles of adjacent overviews are applied to \gls{css} selector \texttt{\#maps-container.osx-d ock .li.nearby} and \texttt{\#maps-container.osx-dock .li.nearby canvas}. Margins for the \texttt{.li.nearby} element are smaller than they are for the focused overview and the scale of the \texttt{<canvas>} element is $0.93$, like it is for the Apple Dock effect --- adjacent items are enlarged but not as large as the focus item.
 
 \subsection{Stacked Cards Effect}
+\label{chap4:cards}
+
+The realization of the effect consists of also two parts, \gls{js} and \gls{css} part.
+
+The \gls{js} part is as mentioned before, include \texttt{initStacked()}, \texttt{destroyStacked()} and \texttt{updateStacked()} in class \texttt{EffectManager}.
+
+After the corresponding \gls{js} part applies necessary \gls{css} class selectors, styles for \emph{Stacked Cards} effects will automatically be activated.
+
+First of all, the file \texttt{./css/stacked.css} applies flexbox properties\footnote{ For more information about flexbox in \gls{css3}, see \url{https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox}.} on the container \texttt{\#maps-container.stacked} and its children \texttt{\#maps-container.stacked .li}, making all overviews occupying an equal amount of space on the y-axis of the screen, and when space is not enough to hold them all, stretch all the overviews.
+
+On the container, the core of the flexbox properties are applied:
+
+\begin{verbatim}
+  #maps-container.stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+\end{verbatim}
+
+On the children of the container, the core of the flexbox properties are applied:
+
+\begin{verbatim}
+  #maps-container.stacked .li {
+    flex: 1;
+    min-height: 0;
+  }
+\end{verbatim}
+
+Note that the \texttt{min-height} property make the children, here the overview elements, able to be stretched when needed.
+
+After the space distribution, 3d effect properties are also set for each overview elements. The virtual distance between the camera and the web page is set to be $200$ pixels and centered on the left border of the screen, by:
+
+\begin{verbatim}
+  #maps-container.stacked .li {
+    perspective: 200px;
+    perspective-origin: left;
+  }
+\end{verbatim}
+
+The angle of the rotations on the x-axis of the screen of each individual overviews are set through \gls{js} and can have nice visual effects in combination with the example code.
+
+The focus element should return to the state of not rotated on the x-axis, by:
+
+\begin{verbatim}
+  #maps-container.stacked .li:hover canvas {
+    transform: rotateX(0deg);
+  }
+\end{verbatim}
 
 \subsection{Tabs Effect}
+\label{chap4:tabs}
+
+The realization of the effect is architecturally similar with the previous two effects.
+
+After classes are added and \gls{css} selectors have taken effect, the following styles within \texttt{./css/tabs.css} are applied to container and its children:
+
+\begin{verbatim}
+  #maps-container.tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  #maps-container.tabs .li {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+  }
+\end{verbatim}
+
+Note that only essential positioning \gls{css} codes are described here.
+
+The \gls{css} attribute \texttt{min-width} is worth mentioning here that instead of \texttt{min-height} in the effect \emph{Stacked Cards}, widths of the overviews will be adjusted in this effect and the \texttt{flex-direction} becomes \texttt{row} instead of \texttt{column}, different from the previous effect.
+
+The focus mechanism, however, has a slightly different implementation. The focus overview should be expanded into its full form and will not keep getting shrunk, by the \gls{css} attribute \texttt{min-width} being set to the value of the variable \texttt{mapWidth} by \gls{js} dynamically.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 
@@ -492,11 +753,11 @@ File \texttt{./css/common.css} first sets up all general appearance of the eleme
 
 \section{Back End Calculation}
 
-The back end calculation is done in the \gls{js} file \texttt{naive-worker.js}. This file is being used for initializing the \emph{WebWorker}s inside \texttt{index.js} dynamically. Whenever a calculation or extraction for a specific region of a dataset is needed, the main \gls{js} file \texttt{index.js} is going to send a message to \texttt{naive-worker.js} with desired parameters and this back end will respond with corresponding image data.
+The back end calculation is done in the \gls{js} file \texttt{naive-worker.js}. This file is being used for initializing the \emph{Web Worker}s inside \texttt{index.js} dynamically. Whenever a calculation or extraction for a specific region of a dataset is needed, the main \gls{js} file \texttt{index.js} is going to send a message to \texttt{naive-worker.js} with desired parameters and this back end will respond with corresponding image data.
 
 \begin{figure}[th]
 \centering
-\includegraphics{Figures/Chapter4/messageexchange.png}
+\includegraphics[width=.85\textwidth,keepaspectratio]{Figures/Chapter4/messageexchange.png}
 \decoRule
 \caption[Message Exchange]{Message exchange between \texttt{index.js} and \texttt{naive-worker.js}.}
 \label{fig:messageexchange}
@@ -514,15 +775,127 @@ In the global scope of this file, the following things were done.
 
 \subsection{Message Reception}
 
-See \gmref{fig:messageexchange}.
+As shown \gmref{fig:messageexchange}, when the file \texttt{index.js} sends a request of \texttt{work(params..)} to this file, the function, message reception function, defined as \texttt{onmessage = function (e) \{ ... \}}, will be invoked.
+
+The process is as follows:
+
+\begin{enumerate}
+  \item Mark the current timestamp by \texttt{let ts = performance.now();}.
+  \item Check the magnification level requested.
+  \item Use the correct version of the calculation method, whether the normal version of the function \texttt{getMandelCounts(params..)} or the high precision version \texttt{getMandelCountsHighPrecision(params..)}. Note that the parameters for these two functions are exactly the same.
+  \item Mark the new timestamp after the calculation completes and calcuate the time used for the calcuation.
+  \item Post the message back to front end by \texttt{postMessage(workerResult);}.
+  \item Destroy used resources and allow for garbage collection to avoid memory leak.
+\end{enumerate}
+
+After the process is done, the \emph{Web Worker} will be idle and wait for next requests.
+
+Note that the function starting with the name \texttt{getMandelCounts} should return a result containing the calcuated image data, as well as the input parameters came from the front end that can be used to verify at the front end.
 
 \subsection{Iteration Limit}
 
+The function \texttt{getIterationLimit(magnif)} calcuates the $max$ value in \gmref{alg:simple} and \gmref{alg:grayscale}. It is a \gls{js} represented way of \gmref{eq:max}. The essential code is as follows:
+
+\begin{verbatim}
+  Math.pow(50 * (Math.log10(magnif)), 1.08);
+\end{verbatim}
+
 \subsection{Iteration Count for One Point}
+
+To get the iteration count for one point on the mathmatical complex plane, function \path{calcIterationCount(x, y, maxIterations = 1000)} is used.
+
+The parameters \texttt{x} and \texttt{y} represents the x and y coordinates on the complex plane to be calcuated, and the parameter \texttt{maxIterations} can be omitted and if so, this function will use $1000$ as the max iteration limit. However, this parameter is always passed on to this function since from where this function gets invoked, in the image generation funciton \texttt{getMandelCounts(params..)} and \texttt{getMandelCountsHighPrecision(param s..)}, it passes the result that comes from the function \texttt{getIterationLimit(magnif)} that gives a proper iteration limit.
+
+This function implements the inner loop of the algorithms described in \gmref{alg:simple} and \gmref{alg:grayscale}.
+
+It it worth mentioning that a small enhancement on the performance is used inside this function. Since every time squares of the real component and imaginary component are always needed in the next iteration, the following code is used to reduce the number of multiplications down to $3$ times every iteration:
+
+\begin{verbatim}
+  for (let i = 0; i < maxIterations; i++) {            
+    im = im * re; // First multiplication
+    im = im + im + y;
+
+    re = re2 - im2 + x;
+
+    re2 = re * re; // Second multiplication
+    im2 = im * im; // Third multiplication
+
+    // Use addition instead of square root,
+    // Use 4 instead of 2, since 4 = 2^2
+    if (re2 + im2 > 4) {
+      return i;
+    }
+  }
+\end{verbatim}
 
 \subsection{Image Generation}
 
+As described above, the function \path{getMandelCounts(magnif, centerX, centerY, width, height, max = null)} is used for image generation and results responding.
+
+The parameters of this function is pretty self-explanatory:
+
+\begin{itemize}
+  \item \texttt{magnif} is the magnification level of the result image data that the front end is requesting.
+  \item \texttt{centerX} and \texttt{centerY} are the coordinates of the center of the image data that the front end is requesting.
+  \item \texttt{width} and \texttt{height} are the dimensions of the result image data in pixels.
+  \item \texttt{max} can be omitted and if so, this function will use the results from the function \texttt{getIterationLimit(magnif)} that gives a proper iteration limit with the help of the passed parameter \texttt{magnif}.
+\end{itemize}
+
+The process of this calculation is optimized on a certain scale, following the algorithms described in \gmref{alg:grayscale}, as follows:
+
+\begin{enumerate}
+  \item Initialize a blank image data object, dimensions of how large one single pixel is on the complex plane, the width and height on the complex plane of the to be generated image data, and the current timestamp before starting the calcuation.
+  \item Set up the coordinates of the top left corner of the image data on the complex plane.
+  \item Start the iteration through all the pixels to be generated and fill the 2-dimensional image data array.
+  \item If the time used for calculation has passed $500$ milliseconds and at least one slice of image data is finished with its calcuation, use \texttt{postMessage(params..)} to return a partial result to the front end.
+  \item At the end of the function after the color of all the pixels are calculated, return the result image data together with parameters.
+\end{enumerate}
+
+During this process, the structure of the returning results need to be described here.
+
+The structure of the partial result is in \gls{json} format of \gls{js}, as follows:
+
+\begin{verbatim}
+  postMessage({
+    final: false, result it not final,
+    img: calculated image data,
+    min: current minimum iteration counts,
+    max: current maximum iteration counts,
+    magnif: passed value of magnif to be verified,
+    centerX: passed centerX value,
+    centerY: passed centerY value,
+    width: passed width value,
+    height: passed height value,
+    partStartY: the y coordinates in pixels that
+      current slices of image data starts from,
+    partHeight: the total height for this packet
+      of image data,
+  });
+\end{verbatim}
+
+The structure of the final result is also in \gls{json} format as follows:
+
+\begin{verbatim}
+  return {
+    final: true,
+    img: calculated image data,
+    min: current minimum iteration counts,
+    max: current maximum iteration counts,
+    magnif: passed value of magnif to be verified,
+    centerX: passed centerX value,
+    centerY: passed centerY value,
+    width: passed width value,
+    height: passed height value,
+  }
+\end{verbatim}
+
+We can notice that the value of \texttt{final} attribute is set to \texttt{true} and the attributes \texttt{partStartY} and \texttt{partHeight} is left out.
+
 \subsection{High Precision Version}
+
+Function \texttt{calcIterationCount(params..)} and function \texttt{getMandelCounts(params..)} have both a high precision version of them. They are used when the magnification level are to high for native \gls{js} float numbers to handle.
+
+The high precision version of the two functions are named respectively \texttt{calcIteration CountHighPrecision(params..)} and function \texttt{getMandelCountsHighPrecision\\(params..)} --- only adding a \texttt{HighPrecision} at the end of the names of the functions, with exactly the same signature of the parameters.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 
@@ -537,13 +910,36 @@ Other open source third-party utilities lie in different folders with correspond
 In \texttt{./js} folder, all \gls{js} third-party files are here, including:
 
 \begin{itemize}
-    \item File \texttt{decimal.min.js} is for high-precision floating points calculation for \acrfull{js}.
+    \item File \texttt{decimal.min.js} is for high-precision floating points calculation for \gls{js}.
     \item File \texttt{jquery-3.4.1.min.js} is for \gls{dom} traversal and manipulation, event handling and animation.
     \item File \texttt{bootstrap.bundle.min.js} is for some basic styling of the control panel sitting on top right corner of the screen.
 \end{itemize}
 
 \subsection{Folder \texttt{./fa}}
 
+In the folder \texttt{./fa} there is all the necessary file needed for the dependency \emph{FontAwesome}, the web's most popular icon set and toolkit.
+
+In the current project, we're only using the free and open-source part of this dependency and the used icons shown in \gmref{fig:fa}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.5\textwidth,keepaspectratio]{Figures/Chapter4/fa.png}
+\decoRule
+\caption[FontAwesome Icons]{Used \emph{FontAwesome} icons in the project.}
+\label{fig:fa}
+\end{figure}
+
 \subsection{Folder \texttt{./bs}}
 
-\subsection{Folder \texttt{./css}}
+In the folder \texttt{./fa} there is all the necessary file needed for the dependency \emph{Bootstrap} as mentioned multiple times in this project.
+
+\emph{Bootstrap} is an open source toolkit for developing with \gls{html}, \gls{css}, and \gls{css}. It allows ideas and building applications with Sass\footnote{ To know more about Sass, see \url{https://sass-lang.com/}.} variables and mixins, responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.
+
+In this project, however, we're using only a small part of \emph{Bootstrap}, to be more specific, the appearance of the control panel, including:
+
+\begin{itemize}
+  \item Form elements, such as input text fields and checkboxes
+  \item Tab pages, for example the four categories of the control panel with corresponding tab pages
+  \item Dropdown menus, for example the two dropdown selections in \emph{Effects} tab page
+  \item Appearances of buttons and colored themes, such as green buttons and red dropdown buttons
+\end{itemize}
