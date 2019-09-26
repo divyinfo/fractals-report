@@ -12,7 +12,7 @@ In this chapter, we'll talk about results, comparison between different ways of 
 
 \section{General Results}
 
-For starters, this project successfully implemented the functionality of browsing through the dataset Mandelbrot set with the techniques of \gls{fpc} as shown in \gmref{fig:chap5:basic}. There is a focus view, a context view and a control panel located on the right side of the screen which can be hidden, and four different categories of controls this control panel can offer, shown in \gmref{fig:chap5:fourcate}. All of them with nice modern looks.
+For starters, this project successfully implemented the functionality of browsing extreme resolution datasets with the techniques of \gls{fpc} using Mandelbrot set as source of dataset, as shown in \gmref{fig:chap5:basic}. There is a focus view, a context view and a control panel located on the right side of the screen which can be hidden, and four different categories of controls this control panel can offer, shown in \gmref{fig:chap5:fourcate}. All of them with nice modern looks.
 
 \begin{figure}[H]
 \centering
@@ -36,14 +36,14 @@ Other basic functionalities such as zooming and panning are also implemented, wh
 
 \subsection{Zooming}
 
-The zooming functionality works as expected shown in \gmref{fig:chap5:zooming}, when user scrolls the mouse wheel, the magnification level is going to increase or decrease until the user stops to scroll. When the magnification level increases or decreases, more context views is going to be created or removed based on the sizes of the projection area related with the parent context view. The later the context view shows up, the closer the context is to the focus area.
+The zooming functionality works as expected shown in \gmref{fig:chap5:zooming}, when user scrolls the mouse wheel, the magnification level is going to increase or decrease until the user stops to scroll. When the magnification level increases or decreases, more context views are going to be created or removed based on the sizes of the projection area related with the parent context view. The later the context view shows up, the closer the context is to the focus area.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/zooming.png}
 % \includegraphics{Figures/Chapter5/zooming.png}
 \decoRule
-\caption[Zooming Functionality]{A simple illustration of the zooming functionality --- When user scrolls the mouse wheel to zoom in, more context views show up. The reverse way, zooming out, works also in a similar way.}
+\caption[Zooming Functionality]{A simple illustration of the zooming functionality --- When user scrolls the mouse wheel to zoom in, more context views will show up when needed. The reverse way, when user scrolls the mouse wheel to zoom out, context views will be removed when not so many are needed.}
 \label{fig:chap5:zooming}
 \end{figure}
 
@@ -82,25 +82,29 @@ The implemented application in this project can go deep into the dataset efficie
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/deep.png}
 % \includegraphics{Figures/Chapter5/deep.png}
 \decoRule
-\caption[Zooming Deep Into the Dataset]{The application can go deep into the dataset at a level of around $62$ trillions times deeper than the original, under default settings, with quite some context views occupying large portion of the visual area.}
+\caption[Zooming Deep Into the Dataset]{The application can go deep into the dataset at a level of around $62$ trillion times deeper than the original, under default settings, with quite some context views occupying large portion of the visual area.}
 \label{fig:chap5:deep}
 \end{figure}
 
 The basic functionalities are successfully implemented and in the following sections we'll be talking about the implementation of effects.
+
+\subsection{Comparison Mandelbrot Set resolution with Google Map resolution}
+
+A magnification level of about $62$ trillion times deeper than in the original Mandelbrot pattern could in our work reach in only circa $5$ seconds. This is more than $3$ million times higher than the best resolution of Google Maps. The least-detailed zoom level in Google Maps is level $0$ with pixel size at equator of $157$ km; on highest level $24$ in Google Maps the pixel size at equator is $9.3$ mm\cite{microimages2012googlemaps}. So the maximal magnification level in Google Maps is about $17$ million.
 
 \subsection{Scrollbar + Dock Effect}
 \label{chap5:scrollbar}
 
 The effect \emph{Scrollbar + Dock} adds a modern-looking scrollbar on the container of the context views, making the context views not occupying too much space on the screen monitor. When user wants to browse the contexts, the scrollbar can be dragged in either directions or the mouse wheel can be used to navigate through different levels of contexts, as shown in \gmref{fig:chap5:scrollbar}.
 
-The Apple Dock effect can also be seen clearly from the illustration that the focused context view are enlarged with its nearby contexts with lesser increment in dimensions.
+The Apple Dock effect can also be seen clearly from the illustration that the focused context view is enlarged with its nearby contexts with lesser increment in dimensions.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/scrollbar.png}
 % \includegraphics{Figures/Chapter5/scrollbar.png}
 \decoRule
-\caption[Scrollbar + Dock Effect]{A simple demonstration of the \emph{Scrollbar + Dock} effect under the magnification level of around $62$ trillions and $22$ context views.}
+\caption[Scrollbar + Dock Effect]{A simple demonstration of the \emph{Scrollbar + Dock} effect under the magnification level of around $62$ trillion and $22$ context views.}
 \label{fig:chap5:scrollbar}
 \end{figure}
 
@@ -114,7 +118,7 @@ The effect \emph{Stacked Cards} makes all the context views stay on one screen m
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/cards.png}
 % \includegraphics{Figures/Chapter5/cards.png}
 \decoRule
-\caption[Stacked Cards Effect]{A simple demonstration of the \emph{Stacked Cards} effect under the magnification level of around $62$ trillions and $22$ context views.}
+\caption[Stacked Cards Effect]{A simple demonstration of the \emph{Stacked Cards} effect under the magnification level of around $62$ trillion and $22$ context views.}
 \label{fig:chap5:cards}
 \end{figure}
 
@@ -132,25 +136,25 @@ It is also worth mentioning that when user tries to focus one context view as sh
 \subsection{Tabs}
 \label{chap5:tabs}
 
-The effect \emph{Tabs} puts all \glspl{map} on the top side of the screen, like how modern browsers handle the open tab pages, shown in \gmref{fig:chap5:tabs}. As the number of the context views goes higher, the widths of the tabs will become smaller, like a web browser. The images of the dataset are not distorted in this arrangement and only cropped with the central data kept, as expected.
+The effect \emph{Tabs} puts all \glspl{map} on the top side of the screen, like the way modern browsers handle the open tab pages, shown in \gmref{fig:chap5:tabs}. As the number of the context views goes higher, the widths of the tabs will become smaller, like a web browser. The images of the dataset are not distorted in this arrangement and only cropped with the central data kept, as expected.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/tabs.png}
 % \includegraphics{Figures/Chapter5/tabs.png}
 \decoRule
-\caption[Tabs Effect]{A simple demonstration of the \emph{Tabs} effect under the magnification level of around $62$ trillions and $22$ context views.}
+\caption[Tabs Effect]{A simple demonstration of the \emph{Tabs} effect under the magnification level of around $62$ trillion and $22$ context views.}
 \label{fig:chap5:tabs}
 \end{figure}
 
-When a certain view is focused, as shown in \gmref{fig:chap5:tabs2}, the context view is expanded into its full form and a tooltip of the corresponding magnification level will be shown. This behaviour is as expected and is very much like how browsers treat the title of the focus tab.
+When a certain view is focused, as shown in \gmref{fig:chap5:tabs2}, the context view is expanded into its full form and a tooltip of the corresponding magnification level will be shown. This behaviour is as expected and is very much like the way browsers treat the title of the focus tab.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter5/tabs2.png}
 % \includegraphics{Figures/Chapter5/tabs2.png}
 \decoRule
-\caption[Tabs Effect with One Focused Context View]{One ``tab'' is focused like how modern browsers show the complete title of the current focus web page.}
+\caption[Tabs Effect with One Focused Context View]{One ``tab'' is focused like the way modern browsers show the complete title of the current focus web page.}
 \label{fig:chap5:tabs2}
 \end{figure}
 

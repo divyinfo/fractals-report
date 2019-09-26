@@ -14,7 +14,7 @@ Not only the technology stack that this project used is important to further und
 
 \section{Web Technology Stack}
 
-Before starting to program on the software that shows the different ways to show an interface providing \gls{fpc} with many \gls{lod}, we must first choose the nature and language of the program. A web technology stack program stands out easily and as a matter of fact, was also the first choice for the development of the immature prototype in the first place. There are several reasons behind it. For web technology stack developed programs:
+Before starting to program on the software that shows the different \gls{ui} that can provide \gls{fpc} with many \gls{lod}, we must first choose the nature and language of the program. A web technology stack program stands out easily and as a matter of fact, was also the first choice for the development of the immature prototype in the first place. There are several reasons behind web technology stack developed programs:
 
 \begin{itemize}
     \item \textbf{Compatibility} Code once, it works everywhere. It saves lots of time for users and testers to read a long manual. All we need is a working browser with loose requirements to it.
@@ -47,9 +47,9 @@ Some other approaches were also considered, for example to use an intermediate s
 
 \section{Web, HTML5 And Canvas API}
 
-After the choice of web technology stack, we'll be talking about the equipments that are used in the project.
+After the choice of web technology stack, we'll be talking about equipments that is used in the project.
 
-Technically speaking, web wechnologies are focused on \gls{ui} and communications between servers and computers since the computers and servers on the internet can't communicate with each other the way people do, however, the communication part is not hugely focused in this project. First thing to know is that web technology stack includes the markup languages and multimedia packages servers and computers use to communicate, however, it's the markup languages and multimedia packages that we focus on, not the communication part, since the communication involved currently is still on local machines.
+Technically speaking, web technologies are focused on \gls{ui} and communications between servers and computers since the computers and servers on the internet can't communicate with each other the way people do, however, the communication part is not hugely focused in this project. First thing to know is that web technology stack includes the markup languages and multimedia packages servers and computers use to communicate, however, we focus on markup languages and multimedia packages, not the communication part, since the communication involved currently is still on local machines.
 
 \subsection{Browsers}
 
@@ -70,7 +70,7 @@ There are some fundamental things for web programming. The first things we need 
 
 \paragraph{HTML}
 
-\gls{html} is one of the first thing to be introduced in this section. Thanks to \gls{html}, the browsers can know what to present when we hit them we a request. It is the standard markup language for documents designed to be displayed in a web browser. It can be assisted by technologies such as \gls{css} and scripting languages such as \gls{js}.\cite{wiki:html}
+\gls{html} is one of the first thing to be introduced in this section. Thanks to \gls{html}, the browsers can know what to present when we hit them with a request. It is the standard markup language for documents designed to be displayed in a web browser. It can be assisted by technologies such as \gls{css} and scripting languages such as \gls{js}.\cite{wiki:html}
 
 \paragraph{CSS}
 
@@ -101,9 +101,9 @@ There are lots of new features that \gls{h5} brings to the original \gls{html}, 
 \paragraph{Performance and Integration} Providing greater speed optimization and better usage of computer hardware.
 \paragraph{Styling} Allowing more sophisticated themes and \gls{ui} experience.
 
-Solving exactly the problems of our focus points in this thesis. Some more specific details to each of the above points and their applications in this project will be shortly described.
+The improvements of \gls{h5} exactly solvie the problems of our focus points in this thesis. Some more specific details to each of the above points and their applications in this project will be shortly described.
 
-In the graphics part, the new element \texttt{<canvas>} element that allows delicate drawing on web pages are heavily used. 
+In the graphics part, the new \texttt{<canvas>} element that allows delicate drawing on web pages is heavily used. 
 
 In the performance and integration part, \emph{Web Worker}s are used allowing delegation of \gls{js} evaluation to background threads, preventing these operations from slowing down \gls{ui} interactive events. The separation used in the project can also be easily advanced by replacing this multithreading calculation part with the new \emph{XMLHttpRequest} allowing fetching information asynchronously, also allowing it to display dynamic content, varying according to the time and user actions\footnote{ This is the technology behind \emph{Ajax}. To know more information about \emph{Ajax}, see \url{https://en.wikipedia.org/wiki/Ajax_(programming)}.}. 
 
@@ -123,11 +123,11 @@ Two new layouts have been added to \gls{css3}: the \gls{css} multi-column layout
 
 \subsection{Canvas API}
 
-\gls{h5} brought exciting new advantages to the \gls{html} coding world as mentioned above. Amongst them all, one of the most thrilling one, the new \texttt{<canvas>}, allows us to render delicate graphics powered by \gls{js}. We'll be talking about what it is and then the \gls{api} that supports its usages.
+\gls{h5} brought exciting new advantages to the \gls{html} coding world as mentioned above. Amongst them all, one of the most thrilling one, the new \texttt{<canvas>}, allows us to render delicate graphics powered by \gls{js}. We will be talking about what it is then describe the \gls{api} that supports its usages.
 
 \texttt{<canvas>} is an \gls{html} element which can be used to render graphics via scripts\footnote{ To know about the \texttt{<canvas>} element, see \url{https://en.wikipedia.org/wiki/Canvas_element}.}, here in our project \gls{js}. It can, for instance, be used to draw graphs or create simple (and not so simple) animations. In our project, \texttt{<canvas>} is used for the graphical representation of the extreme resolution datasets.
 
-It's also worth mentioning that after first introduced in \emph{WebKit} by \emph{Apple} for the \emph{OS X Dashboard}, \texttt{<canvas>} has since been implemented and supported in all major browsers today.
+It's also worth mentioning that after first introduced in \emph{WebKit} by \emph{Apple} for the \emph{OS X Dashboard}, \texttt{<canvas>} has since this time been implemented and supported in all major browsers today.
 
 The Canvas \gls{api} itself is a sense of how to use scripts to draw on this newly introduced \gls{html} element. It is largely focuses on 2D graphics. The reason to bring it up here together with the \texttt{<canvas>} element is that there are many other \gls{api}s that come together with it, for example the WebGL \gls{api}, which also uses the \texttt{<canvas>} element, draws hardware-accelerated 2D and 3D graphics. In another word, the context of the \texttt{<canvas>} element\footnote{ Here not the same concept as the ``context'' in the previously mentioned term \gls{fpc}.} is ``2d'' through the Canvas \gls{api}, not ``webgl'' context or any other.
 
@@ -204,7 +204,7 @@ In \gmref{alg:simple}, the variable $max$ can be treated as a constant for each 
     {(50 \cdot log_{\thinspace 10 \thinspace}{magnif})}^{1.08}
 \end{equation}
 
-Where $magnif$ is the magnification level, a number representing the number of pixels that together has a length of $1$ on the mathmatical axis, shown in \gmref{fig:magnif}.
+Where $magnif$ is the magnification level, a number representing the number of pixels that together has a length of $1$ on the mathematical axis, shown in \gmref{fig:magnif}.
 
 \subsection*{Algorithms Idea for Graphical Representation with Grayscale}
 
@@ -217,7 +217,7 @@ In the mentioned algorithm \gmref{alg:simple}, $c$ is set to either \emph{black}
             $z_n = z_{n - 1}^2 + c$\;
             \If{the value of $z_n$ is larger than $2$}{
                 $c$ does not belong to $\mathbb{M}$\;
-                In this case, we set the color of $c$ to \st{\emph{white}} \emph{grayscale\footnote{ In the current implementation, this color is set to be grayscaled red, rgb($grayscale\% \times 255$, 0, 0).} depending on the number of iteration} $n$ and the calculation of sequence is stopped\;
+                In this case, we set the color of $c$ to \emph{grayscale\footnote{ In the current implementation, this color is set to be grayscaled red, rgb($grayscale\% \times 255$, 0, 0).} depending on the number of iteration} $n$ and the calculation of sequence is stopped\;
             }
             \uElseIf{$n = max$}{
                 $c$ belongs to $\mathbb{M}$ and we set the color of $c$ to \emph{black}\;

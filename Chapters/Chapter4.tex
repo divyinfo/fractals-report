@@ -74,7 +74,7 @@ Some trivial \emph{Python}, \gls{js} and \gls{html} codes left from the prototyp
 
 \paragraph{File \texttt{index.html}}
 
-This entry \gls{html} file of this project. When a server is being run on the local machine, this is the first file getting executed. When a different implementation of the back end using techniques other than a web worker, for example a \texttt{WebSocket}, is developed and being adapted to this project, double-clicking on this file should also start this project.
+This is the entry \gls{html} file of this project. When a server is being run on the local machine, this is the first file getting executed. When a different implementation of the back end using techniques other than a web worker, for example a \texttt{WebSocket}, is developed and being adapted to this project, double-clicking on this file should also start this project.
 
 \paragraph{File \texttt{index.js}}
 
@@ -209,7 +209,7 @@ The \texttt{<body>} part is the essential part of the \gls{html} entry, which de
 \label{fig:rootdom}
 \end{figure}
 
-After the visual \texttt{<div>} part, several \texttt{<script>} tags come after it to include what's necessary for the essential coding part. Here firstly are the dependencies of the project, including \emph{jQuery}, \emph{Bootstrap}'s \gls{js} part, and \emph{MiniBar}'s \gls{js} part. And then at the very end the main \gls{js} file \texttt{index.js} is included and all the core programs of this project goes in there.
+After the visual \texttt{<div>} part, several \texttt{<script>} tags come after it to include what's necessary for the essential coding part. Here firstly are the dependencies of the project, including \emph{jQuery}, \emph{Bootstrap}'s \gls{js} part, and \emph{MiniBar}'s \gls{js} part. And then at the very end the main \gls{js} file \texttt{index.js} is included and all the core programs of this project go in there.
 
 Worth noting that conventionally all \gls{js} files should be included at the very end of the page as what we are doing now, unless the \gls{js} file is needed before the render phase of the web page. This way if the \gls{js} file is a little bit bigger than usual, the loading of the \gls{js} files won't affect the rendering process of the \gls{dom} documents.
 
@@ -232,7 +232,7 @@ The function \texttt{work(params...)} is the interface between \texttt{MandelWor
 
 \begin{itemize}
   \item \texttt{magnif} The magnification level of the result image to be expected from the \emph{Web Worker}.
-  \item \texttt{centerX} The \texttt{x} component of the center coordinates on the mathmatical plane of the result image to be expected from the worker.
+  \item \texttt{centerX} The \texttt{x} component of the center coordinates on the mathematical plane of the result image to be expected from the worker.
   \item \texttt{centerY} The \texttt{y} component of this coordinates.
   \item \texttt{width} The width in pixels of the result image.
   \item \texttt{height} The height in pixels of the result image.
@@ -240,17 +240,17 @@ The function \texttt{work(params...)} is the interface between \texttt{MandelWor
   \item \texttt{callbackThis} The ``this'' context where the \texttt{callback} function should be executed under.
 \end{itemize}
 
-Here what's worth mentioning is the parameter \texttt{magnif}. The magnification level is a number representing the number of pixels that together has a length of $1$ on the mathmatical axis. As shown in \gmref{fig:magnif} is an image with the magnification level of $2$, since $2$ pixels have the length of $1$ on the mathmatical axis.
+Here what's worth mentioning is the parameter \texttt{magnif}. The magnification level is a number representing the number of pixels that together has a length of $1$ on the mathematical axis. As shown in \gmref{fig:magnif} is an image with the magnification level of $2$, since $2$ pixels have the length of $1$ on the mathematical axis.
 
 \begin{figure}[th]
 \centering
 \includegraphics[keepaspectratio]{Figures/Chapter4/magnif.png}
 \decoRule
-\caption[Magnification Level]{Magnification level in aspect of mathmatical axis.}
+\caption[Magnification Level]{Magnification level in aspect of mathematical axis.}
 \label{fig:magnif}
 \end{figure}
 
-Once this function is invoked, \texttt{MandelWorker} will tell its own \emph{Web Worker} to start working on datasets fetching\footnote{ In the context of the current project, is actually image generation. }, and if any sorts of results come through that worker, hit the \texttt{workerResponse(e)} function of the current \texttt{MandelWorker}.
+Once this function is invoked, \texttt{MandelWorker} will tell its own \emph{Web Worker} to start working on datasets fetching\footnote{ In the context of the current project, it is actually image generation. }, and if any sorts of results come through that worker, hit the \texttt{workerResponse(e)} function of the current \texttt{MandelWorker}.
 
 \textbf{Function \texttt{workerResponse(e)}}
 
@@ -268,11 +268,11 @@ An abstract concept of pairing a minimap\footnote{ Same concept in current proje
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter4/mapvisualpair.png}
 \decoRule
-\caption[Map Visual Pair]{Map area image and visual area(current focus region) image.}
+\caption[Map Visual Pair]{Pairing between overview (minimap image) and detail (visual area image). Pairing supports the creation of a purple rectangle in the overview that shows the region of the detail. Panning (shifting) the detail automatically shifts the purple rectangle in the overview.}
 \label{fig:mapvisualpair}
 \end{figure}
 
-The minimap representing a relatively ``larger'' area in the dataset and the visual area, which represents the active observing region, actually have both same resolution so they can both be displayed on a \gls{fhd} screen. Although the visual area seems ``smaller'' in comparison with the \gls{map} area, since it's an active region that is being observed by the user, the size of this visual area only represents its dimensions on the mathmatical plane and not smaller pixels-wise.
+The minimap representing a relatively ``larger'' area in the dataset and the visual area, which represents the active observing region, actually have both same resolution so they can both be displayed on a \gls{fhd} screen. Although the visual area seems ``smaller'' in comparison with the \gls{map} area, since it's an active region that is being observed by the user, the size of this visual area only represents its dimensions on the mathematical plane and not smaller pixels-wise.
 
 The \gls{map} image, however, will normally be shrunk and put on the left side of the screen, till the user hovers over a specific \gls{map} that will trigger the preview process of this program so he can have a glance of this image in a \gls{fhd} way.
 
@@ -283,19 +283,19 @@ The reason to pair up a visual area with a \gls{map} area is that whenever the u
 \includegraphics[width=\textwidth,keepaspectratio]{Figures/Chapter4/mvp-pairflow.png}
 % \includegraphics{Figures/Chapter4/mvp-pairflow.png}
 \decoRule
-\caption[Pairing Multiple Levels of \glspl{map}]{When multiple hierarchies of \glspl{map} present, visual area changes, all \glspl{map} changes.}
+\caption[Multilevel Minimap Hierarchy]{Multilevel Minimap Hierarchy: When the user pans the detail view, all purple rectangles in all \glspl{map} above are shifted.}
 \label{fig:mvp-pairflow}
 \end{figure}
 
 \textbf{Function} \verb|init(mapCanvas, previewCanvas, visCanvas = null)|
 
-This function will initialize the current \texttt{MapVisualPair}, bounding a \texttt{mapCanvas}, a \texttt{previewCanvas} and a \texttt{visCanvas} all of type \texttt{<canvas>} element to this class. When internally a drawing action should be performed, related images will be drawn on corresponding canvas.
+This function will initialize the current \texttt{MapVisualPair}, binding a \texttt{mapCanvas}, a \texttt{previewCanvas} and a \texttt{visCanvas} all of type \texttt{<canvas>} element to this class. When internally a drawing action should be performed, related images will be drawn on corresponding canvas.
 
-The canvas \texttt{mapCanvas} will be used to draw the shrunk version of the \gls{map} image. \texttt{previewCanvas} will be used to draw the normal(\gls{fhd}) version of the \gls{map} image. And \texttt{visCanvas} will be used to draw the visual area image in \gls{fhd} if set.
+The canvas \texttt{mapCanvas} will be used to draw the shrunk version of the \gls{map} image. \texttt{previewCanvas} will be used to draw the normal (\gls{fhd}) version of the \gls{map} image. And \texttt{visCanvas} will be used to draw the visual area image in \gls{fhd} if set.
 
-After bounding the canvases, this function will also check if any event handlers are bound to the events \texttt{mouseover} and \texttt{mouseout} to the \texttt{mapCanvas} element, and record corresponding info to the element to avoid attemps to rebound event handlers to the same \texttt{<canvas>} element. In this way, only one event handler for \texttt{mouseover} and \texttt{mouseout} will be triggered when the user hovers their mouse on the \texttt{<canvas>} and when the user put their cursor out of the element.
+After binding the canvases, this function will also check if any event handlers are bound to the events \texttt{mouseover} and \texttt{mouseout} to the \texttt{mapCanvas} element, and record corresponding info to the element to avoid attempts to rebind event handlers to the same \texttt{<canvas>} element. In this way, only one event handler for \texttt{mouseover} and \texttt{mouseout} will be triggered when the users hover their mouses on the \texttt{<canvas>} and when the users put their cursors out of the element.
 
-The handlers this function is going to bound to the \texttt{mapCanvas} element are going to first add \gls{css} class \texttt{.nearby} to adjacent siblings of this canvas, and check if any additional callbacks this class should call. The callbacks, if any, which are set in the private properties \texttt{mouseOverCallback} and \texttt{mouseOutCallback}, will be called under set context \texttt{mouseOverCallbackThis} and \texttt{mouseOutCallbackThis} when user performs corresponding actions. As mentioned before, they will also be called only once because the bounding information is recorded. In the project, these callbacks and the contexts of them are set by a manager class \gmref{chap4:effectmanager}.
+The handlers this function is going to bind to the \texttt{mapCanvas} element are going to first add \gls{css} class \texttt{.nearby} to adjacent siblings of this canvas, and check if any additional callbacks this class should call. The callbacks, if any, which are set in the private properties \texttt{mouseOverCallback} and \texttt{mouseOutCallback}, will be called under set context \texttt{mouseOverCallbackThis} and \texttt{mouseOutCallbackThis} when user performs corresponding actions. As mentioned before, they will also be called only once because the bound information is recorded. In the project, these callbacks and the contexts of them are set by a manager class \gmref{chap4:effectmanager}.
 
 \textbf{Function} \verb|destroy()|
 
@@ -305,7 +305,7 @@ This function as the name implies releases all in-use resources, including \text
 
 When the class is told to draw images on corresponding canvas elements, it will not automatically draw the purple rectangle indicating the current observing visual area, since the cached image data does not include this rectangle --- it doesn't belong to the extreme resolution dataset itself, therefore, this function exists to draw this current focus area using a purple rectangle to indicate it, drawing this rectangle on the \texttt{mapCanvas} whenever invoked. Note that whenever the image from the calculation side is fetched, without invoking this function, no current obeserving area rectangle will be shown, since the newly fetched image data will cover the old one also the old drawn rectangle.
 
-The parameters \texttt{offsetRealX} and \texttt{offsetRealY} can also be set, as the purple rectangle to be drawn will then have an offset of (\texttt{offsetRealX}, \texttt{offsetRealY}) with respect to the center of the current observing area on the mathmatical complex plane.
+The parameters \texttt{offsetRealX} and \texttt{offsetRealY} can also be set, as the purple rectangle to be drawn will then have an offset of (\texttt{offsetRealX}, \texttt{offsetRealY}) with respect to the center of the current observing area on the mathematical complex plane.
 
 \textbf{Function} \verb|drawPreviewHoverArea(offsetRealX = 0, offsetRealY = 0)|
 
@@ -313,7 +313,7 @@ Like the function \texttt{drawMapHoverArea}, this function will also draw a rect
 
 \textbf{Function} \verb|moveTo(x = null, y = null)|
 
-This function is used to move the current \texttt{MapVisualPair} around. The parameters of coordinates are on the mathmatical complex plane, i.e. with respect to the entire datasets.
+This function is used to move the current \texttt{MapVisualPair} around. The parameters of coordinates are on the mathematical complex plane, i.e. with respect to the entire datasets.
 
 Note that these two parameters can be omitted and when omitted, the current \texttt{MapVisualPair} will simply send a ping to the calculation side and grab new image data for current observing coordinates, like a ``refresh'' action.
 
@@ -323,7 +323,7 @@ The magnification for the pair of these two canvases. See \gmref{fig:magnif} for
 
 \textbf{Properties} \texttt{visCenterX} and \texttt{visCenterY}
 
-The coordinates of the center point of the current observing visual area, with respect to the mathmatical complex plane.
+The coordinates of the center point of the current observing visual area, with respect to the mathematical complex plane.
 
 \textbf{Properties} \texttt{visCanvasWidth} and \texttt{visCanvasHeight}
 
@@ -331,11 +331,11 @@ The width and height in \textbf{pixels} of the image data of the whole visual ar
 
 \textbf{Properties} \texttt{visImgOffsetX} and \texttt{visImgOffsetY}
 
-These two properties are set for the dragging actions that are realized in \gmref{chap4:minimapmanager}. They represents the current dragging offset with respect to the top left corner of the \texttt{visCanvas}. The reference point being top left corner not the center point is because in web canvas drawing system, the (0, 0) point is the top left corner, unlike in mathmatical complex plane it being the center.
+These two properties are set for the dragging actions that are realized in \gmref{chap4:minimapmanager}. They represent the current dragging offset with respect to the top left corner of the \texttt{visCanvas}. The reference point being top left corner not the center point is because in web canvas drawing system, the (0, 0) point is the top left corner, unlike in mathematical complex plane it being the center.
 
 \textbf{Properties} \texttt{mapCenterX} and \texttt{mapCenterY}
 
-Like the properties \texttt{visCenterX} and \texttt{visCenterY}, these two properties represents the coordinates of the center point of the current \gls{map} area, with respect to the mathmatical complex plane. In \gmref{fig:mapvisualpair}, they're the center coordinates of the \gls{map} image.
+Like the properties \texttt{visCenterX} and \texttt{visCenterY}, these two properties represents the coordinates of the center point of the current \gls{map} area, with respect to the mathematical complex plane. In \gmref{fig:mapvisualpair}, they're the center coordinates of the \gls{map} image.
 
 \subsubsection{Class \texttt{MinimapManager}}\label{chap4:minimapmanager}
 
@@ -345,7 +345,7 @@ The manager class of all the minimaps, controlling all their behaviours on the t
 
 \textbf{Function} \path{initMaps(visCanvas, previewCanvas, mapsContainer, visualContain er, hoverX = 0, hoverY = 0)}
 
-This function initializes the states of all the \texttt{MapVisualPair}s that should be displayed, as well as initializing its own requird properties.
+This function initializes the states of all the \texttt{MapVisualPair}s that should be displayed, as well as initializing its own required properties.
 
 The properties \texttt{visCanvas} and \texttt{previewCanvas} are the canvases bound to this manager. \texttt{visCanvas} is the canvas for the main visual area and the details image is rendered on this canvas. \texttt{previewCanvas} is the canvas that's initially hidden, but will be shown when the \texttt{EffectManager} described in \gmref{chap4:effectmanager} instructs, designed for the presentation of the preview images. These two canvases have exactly the same dimensions, covering the entire \gls{ui} viewport, and on the most bottom layer of the page hence being laid over by the \glspl{map} and control panels. \texttt{previewCanvas} in turn lays over \texttt{visCanvas} since when a preview instruction is issued, it has to be displayed over the original visual area.
 
@@ -353,9 +353,9 @@ The property \texttt{mapsContainer} is the container holding all the canvases fo
 
 With the dimensions of the first \gls{map}, this manager then decides whether additional \glspl{map} are required, based on the results of whether this projected area on \gls{map} is too small. If this area is too small, additional \gls{dom} structure consisting of one \texttt{<canvas>} and one \texttt{<span>} will be created and appended to the container. The criteria of whether this area is too small is defined by the private property \texttt{this.minStrokeW}\footnote{ In pixels.} of this manager. After the new \gls{dom} is created, we then will have two canvases. The first one will be the \gls{map} canvas and the one created after the calculation of the projection area will be the ``visual'' area. These two areas will then be paired up, forming an object of \texttt{MapVisualPair}. The \texttt{magnif} value of the visual area will be determined by the \texttt{magnif} value of the \gls{map} area, the minimal dimensions allowed for the projection area preset in \texttt{this.minStrokeW} and the dimensions of the dimensions of \texttt{previewCanvas}.
 
-Since the model of \gls{fpc} are hierarchical, we can easily see that the new \texttt{magnif} value of the next \gls{map} area will be the value of the \texttt{magnif} value of the previous visual area. After the pairing of these two \glspl{map} and forming a first \texttt{MapVisualPair}, we can repeat this process described in above paragraph until the projection area on the current \gls{map} area is big enough then set in \texttt{this.minStrokeW}. When this happens, we bind the most recent \gls{map} canvas with the main visual area canvas and form the final \texttt{MapVisualPair}. This pair is named \texttt{this.pairMain} in this manager.
+Since the model of \gls{fpc} is hierarchical, we can easily see that the new \texttt{magnif} value of the next \gls{map} area will be the value of the \texttt{magnif} value of the previous visual area. After the pairing of these two \glspl{map} and forming a first \texttt{MapVisualPair}, we can repeat this process described in above paragraph until the projection area on the current \gls{map} area is big enough then set in \texttt{this.minStrokeW}. When this happens, we bind the most recent \gls{map} canvas with the main visual area canvas and form the final \texttt{MapVisualPair}. This pair is named \texttt{this.pairMain} in this manager.
 
-And the end of the initialization process, we put all these generated \texttt{MapVisualPair}s in an array called \texttt{this.pairs} and also bind \texttt{visualContainer} which holds \texttt{visCanvas} and \texttt{previewCanvas} with this manager. Later this container will be used for the events binding of \gls{ui} interactions.
+At the end of the initialization process, we put all these generated \texttt{MapVisualPair}s in an array called \texttt{this.pairs} and also bind \texttt{visualContainer} which holds \texttt{visCanvas} and \texttt{previewCanvas} with this manager. Later this container will be used for the events binding of \gls{ui} interactions.
 
 \textbf{Function} \verb|initPairMainDrag()|
 
@@ -393,7 +393,7 @@ This function does one simple thing: if the \texttt{dragGlobalID} attribute is s
 
 \textbf{Function} \path{pairMainStepDrag(timestamp)}
 
-During the phase of dragging, since this function is triggered every time a new frame is needed to be rendered, we simply grab the values in \texttt{dragCurrentMouseX} and \texttt{dragCurrentMouseY}, and compare them with \texttt{dragStartX} and \texttt{dragStartY}, and see how much the user has moved their mouse since the last frame rendered.
+During the phase of dragging, since this function is triggered every time a new frame is needed to be rendered, we simply grab the values in \texttt{dragCurrentMouseX} and \texttt{dragCurrentMouseY}, and compare them with \texttt{dragStartX} and \texttt{dragStartY}, and see how much the user has moved the mouse since the last frame rendered.
 
 We then paint the image based on the offsets we calculated from these two pairs of values on the correct position.
 
@@ -771,7 +771,7 @@ In the global scope of this file, the following things were done.
 
 \paragraph{Constants} Constants of default screen width and default screen height are defined in case the front end doesn't give these parameters.
 
-\paragraph{Canvas} An \texttt{OffscreenCanvas} instance is created and instantiated with the dimensions of by default the values of the defined constants. The \texttt{OffscreenCanvas} will be used as the canvas to generate the desired image on, and since it's not being shown on the screen, will occupy less system resources and boost the calculation speed. Corresponding variables is declared after the instantiation, respectively \texttt{canvas} for the \texttt{OffscreenCanvas} itself and \texttt{ctx} as the 2d context of the canvas.
+\paragraph{Canvas} An \texttt{OffscreenCanvas} instance is created and instantiated with the dimensions of by default the values of the defined constants. The \texttt{OffscreenCanvas} will be used as the canvas to generate the desired image on, and since it's not being shown on the screen, it will occupy less system resources and boost the calculation speed. Corresponding variables are declared after the instantiation, respectively \texttt{canvas} for the \texttt{OffscreenCanvas} itself and \texttt{ctx} as the 2d context of the canvas.
 
 \subsection{Message Reception}
 
@@ -802,7 +802,7 @@ The function \texttt{getIterationLimit(magnif)} calcuates the $max$ value in \gm
 
 \subsection{Iteration Count for One Point}
 
-To get the iteration count for one point on the mathmatical complex plane, function \path{calcIterationCount(x, y, maxIterations = 1000)} is used.
+To get the iteration count for one point on the mathematical complex plane, function \path{calcIterationCount(x, y, maxIterations = 1000)} is used.
 
 The parameters \texttt{x} and \texttt{y} represents the x and y coordinates on the complex plane to be calcuated, and the parameter \texttt{maxIterations} can be omitted and if so, this function will use $1000$ as the max iteration limit. However, this parameter is always passed on to this function since from where this function gets invoked, in the image generation funciton \texttt{getMandelCounts(params..)} and \texttt{getMandelCountsHighPrecision(param s..)}, it passes the result that comes from the function \texttt{getIterationLimit(magnif)} that gives a proper iteration limit.
 
